@@ -2,907 +2,1153 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Presensi Ekstrakurikuler 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>📱 Rekap Absen Ekstra · Full Data</title>
     <style>
-        :root { --primary: #0ea5e9; --bg: #f8fafc; --white: #ffffff; --text: #1e293b; }
-        body { font-family: 'Inter', -apple-system, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 10px; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        header { background: var(--primary); color: white; padding: 20px; border-radius: 16px; margin-bottom: 15px; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        h1 { margin: 0; font-size: 1.5rem; }
-        .filter-card { background: var(--white); padding: 20px; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .filter-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
-        label { font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
-        input, select { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; box-sizing: border-box; }
-        .grid-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .table-wrapper { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .scroll-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 700px; }
-        th { background: #f1f5f9; padding: 15px; text-align: left; font-size: 0.75rem; border-bottom: 2px solid #e2e8f0; }
-        td { padding: 14px 15px; border-bottom: 1px solid #f1f5f9; font-size: 0.95rem; }
-        .sticky-col { position: sticky; left: 0; background: white; z-index: 10; font-weight: 600; border-right: 2px solid #f1f5f9; }
-        tr:hover .sticky-col { background: #f8fafc; }
-        .badge { display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 8px; font-weight: 800; font-size: 0.8rem; }
-        .h { background: #dcfce7; color: #166534; } .s { background: #fef9c3; color: #854d0e; }
-        .i { background: #dbeafe; color: #1e40af; } .a { background: #fee2e2; color: #991b1b; }
-        .n { background: #f1f5f9; color: #94a3b8; }
-        .footer-info { display: flex; justify-content: space-between; padding: 15px; font-size: 0.8rem; color: #64748b; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #eef2f6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 16px 12px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .app-card {
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 15px 35px -10px rgba(0,35,60,0.25);
+            overflow: hidden;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: #0b2d47;
+            color: white;
+            padding: 24px 22px 18px;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+        .header p {
+            font-size: 0.95rem;
+            margin-top: 10px;
+            opacity: 0.8;
+            border-left: 4px solid #5080a8;
+            padding-left: 16px;
+        }
+        .filter-panel {
+            background: white;
+            padding: 22px 22px 16px;
+            border-bottom: 1px solid #c9d9ea;
+        }
+        .filter-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .filter-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #1d4b70;
+            margin-bottom: 6px;
+            margin-left: 6px;
+        }
+        .filter-group input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1rem;
+            border: 1.5px solid #d3e0ee;
+            border-radius: 50px;
+            outline: none;
+            background: #f9fcff;
+            transition: 0.15s;
+            -webkit-appearance: none;
+        }
+        .filter-group input:focus {
+            border-color: #0b2d47;
+            background: white;
+            box-shadow: 0 0 0 5px rgba(11,45,71,0.06);
+        }
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+        .btn {
+            flex: 1 1 110px;
+            background: #eaf1f9;
+            border: none;
+            padding: 14px 8px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #0b2d47;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: 0.1s ease;
+        }
+        .btn-primary {
+            background: #0b2d47;
+            color: white;
+            box-shadow: 0 5px 12px -5px #0b2d47b0;
+        }
+        .btn-primary:active { background: #154c70; transform: scale(0.97); }
+        .btn-print {
+            background: #1c5a3e;
+            color: white;
+        }
+        .btn-print:active { background: #154b32; transform: scale(0.97); }
+        .stats {
+            background: #dee9f2;
+            padding: 14px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #0b2d47;
+            border-bottom: 1px solid #b8cee5;
+        }
+        .stats span:first-child {
+            background: #1a3d58;
+            color: white;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .reset-small {
+            background: none;
+            border: none;
+            text-decoration: underline dotted;
+            color: #0b2d47;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+        .table-container {
+            overflow-y: auto;
+            max-height: 62vh;
+            background: white;
+            scrollbar-width: thin;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 600px;
+        }
+        th {
+            background: #1d3f5b;
+            color: white;
+            font-weight: 600;
+            padding: 18px 8px;
+            position: sticky;
+            top: 0;
+            white-space: nowrap;
+        }
+        td {
+            padding: 14px 6px;
+            border-bottom: 1px solid #dde6f0;
+        }
+        .kelas-badge {
+            background: #daeaf5;
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            display: inline-block;
+            color: #113855;
+        }
+        .ekstra-badge {
+            background: #e6eef7;
+            padding: 5px 12px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .absen-cell {
+            font-family: 'SF Mono', monospace;
+            font-weight: 700;
+            background: #f1f7fd;
+            padding: 5px 10px;
+            border-radius: 30px;
+            text-align: center;
+            display: inline-block;
+            min-width: 36px;
+        }
+        .footer {
+            padding: 18px 22px;
+            background: #f4f9ff;
+            color: #2c577a;
+            font-size: 0.8rem;
+            border-top: 1px solid #c1d3e7;
+        }
+        @media (max-width: 500px) {
+            .header h1 { font-size: 1.7rem; }
+            .btn { font-size: 0.85rem; padding: 14px 4px; }
+        }
+        @media print {
+            .no-print, .filter-panel, .stats, .footer, .btn-row { display: none; }
+            .table-container { max-height: none; overflow: visible; }
+            th { background: #aaa; color: black; }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <header><h1>Presensi Ekstrakurikuler 2026</h1></header>
-    <div class="filter-card">
+<div class="app-card">
+    <div class="header no-print">
+        <h1>📋 Rekap 700+<br>Ekstra 2026</h1>
+        <p>23 Jan · 30 Jan · 06 Feb &nbsp; | &nbsp; H/S/I/A</p>
+    </div>
+
+    <div class="filter-panel no-print">
         <div class="filter-group">
-            <label>Cari/Pilih Nama Siswa (Total 778 Siswa)</label>
-            <input list="nameData" id="nameSearch" placeholder="Klik 2x atau ketik nama...">
-            <datalist id="nameData"></datalist>
+            <label>📛 Nama (ketik/pilih)</label>
+            <input type="text" id="namaInput" list="datalistNama" placeholder="cari nama..." autocomplete="off">
+            <datalist id="datalistNama"></datalist>
         </div>
-        <div class="grid-filters">
-            <div class="filter-group"><label>Kelas</label><select id="classFilter"><option value="">Semua</option></select></div>
-            <div class="filter-group"><label>Ekstrakurikuler</label><select id="extraFilter"><option value="">Semua</option></select></div>
+        <div class="filter-group">
+            <label>🏷️ Kelas (ketik/pilih)</label>
+            <input type="text" id="kelasInput" list="datalistKelas" placeholder="misal X - B" autocomplete="off">
+            <datalist id="datalistKelas"></datalist>
+        </div>
+        <div class="filter-group">
+            <label>🎯 Ekstra (ketik/pilih)</label>
+            <input type="text" id="ekstraInput" list="datalistEkstra" placeholder="pilih ekstra..." autocomplete="off">
+            <datalist id="datalistEkstra"></datalist>
+        </div>
+        <div class="btn-row">
+            <button class="btn btn-primary" id="cariBtn">🔍 Cari</button>
+            <button class="btn" id="resetBtn">↺ Reset</button>
+            <button class="btn btn-print" id="printBtn">🖨️ Cetak</button>
         </div>
     </div>
-    <div class="table-wrapper">
-        <div class="scroll-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="sticky-col">Nama Siswa</th>
-                        <th>Kelas</th>
-                        <th>Ekstra</th>
-                        <th>23/01</th>
-                        <th>30/01</th>
-                        <th>06/02</th>
-                    </tr>
-                </thead>
-                <tbody id="attendanceBody"></tbody>
-            </table>
-        </div>
-        <div class="footer-info"><span id="rowCount">Menampilkan 0 data</span><span>Data Terverifikasi 2026</span></div>
-        <div id="noData" style="display:none; padding: 40px; text-align:center; color: #94a3b8;">Data siswa tidak ditemukan.</div>
+
+    <div class="stats no-print">
+        <span id="jumlahSpan">0</span> data ditemukan
+        <button class="reset-small" id="resetSmallBtn">reset filter</button>
+    </div>
+
+    <div class="table-container" id="tableWrapper">
+        <table id="dataTable">
+            <thead>
+                <tr><th>Nama</th><th>Kelas</th><th>Ekstra</th><th>23/1</th><th>30/1</th><th>6/2</th></tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+    <div class="footer no-print">
+        ⚡ urut berdasarkan kelas (asc), nama (asc). Total data ±700 baris.
     </div>
 </div>
+
 <script>
-    // MASUKKAN DATA DARI TAILORED REPORT DI DALAM KURUNG SIKU INI
-    const rawData = [
-  { n: "QONITA JIHAN FAKHRIYAH", k: "X - B", e: "Bahasa Arab", d: ["-", "H", "H"] },
-  { n: "ARINA NAMAIKA", k: "X - C", e: "Bahasa Arab", d: ["-", "H", "H"] },
-  { n: "FAJAR DWI CAHYANI", k: "X - C", e: "Bahasa Arab", d: ["-", "S", "H"] },
-  { n: "KANZARROJAA", k: "X - C", e: "Bahasa Arab", d: ["-", "H", "A"] },
-  { n: "FILZATUL AFIQOH", k: "X - D", e: "Bahasa Arab", d: ["-", "H", "A"] },
-  { n: "SAFINA NISA AZKIA", k: "X - D", e: "Bahasa Arab", d: ["-", "H", "A"] },
-  { n: "FALIHA AZIRA FILLAH", k: "X - E", e: "Bahasa Arab", d: ["-", "H", "H"] },
-  { n: "SHOFA NURCHAFIDHOH IZZUL MAARIF", k: "X - E", e: "Bahasa Arab", d: ["-", "H", "A"] },
-  { n: "ALMIRA ZAYAN NAFIAH", k: "X - F", e: "Bahasa Arab", d: ["-", "I", "H"] },
-  { n: "AULIA ROHMAH", k: "X - F", e: "Bahasa Arab", d: ["-", "I", "H"] },
-  { n: "TSALISA HANNA IMANIA", k: "X - F", e: "Bahasa Arab", d: ["-", "H", "H"] },
-  { n: "ALMASSHELVY A-ISYARACHIM", k: "X - H", e: "Bahasa Arab", d: ["-", "H", "A"] },
-  { n: "RISKA RAHMAWATI", k: "X - J", e: "Bahasa Arab", d: ["-", "I", "H"] },
-  { n: "RIRIN NOPIYA LESTARI", k: "XI - H", e: "Bahasa Arab", d: ["-", "H", "H"] },
-  { n: "TAZKIA MUNA", k: "XI - I", e: "Bahasa Arab", d: ["-", "H", "H"] },
-  { n: "FINA HILMIYA KHAIRUNNISA", k: "XI - J", e: "Bahasa Arab", d: ["-", "H", "H"] },
-  { n: "KHAURA ATTHAYA KHANSA", k: "XI - L", e: "Bahasa Arab", d: ["-", "H", "H"] },
-  { n: "ZUWAIDATUL HUSNA", k: "XI - L", e: "Bahasa Arab", d: ["-", "H", "I"] },
-  { n: "MILA ANGGUN RIZQIANA", k: "X - B", e: "Bahasa Inggris", d: ["I", "H", "-"] },
-  { n: "NISRINA ZAHI NADA", k: "X - B", e: "Bahasa Inggris", d: ["A", "H", "-"] },
-  { n: "NAFISATUL KHIFDZIYAH", k: "X - D", e: "Bahasa Inggris", d: ["H", "H", "-"] },
-  { n: "NAFISA THALITA AGUSTIN", k: "X - E", e: "Bahasa Inggris", d: ["A", "H", "-"] },
-  { n: "ZIANA AMELIA PUTRI", k: "X - H", e: "Bahasa Inggris", d: ["A", "I", "-"] },
-  { n: "AGHNIA RAISA NAZAFARIN", k: "XI - A", e: "Bahasa Inggris", d: ["I", "H", "-"] },
-  { n: "SAFAATUL IKHSANAT", k: "XI - A", e: "Bahasa Inggris", d: ["I", "H", "-"] },
-  { n: "AURYN ZABRINA AZZAHRA", k: "XI - B", e: "Bahasa Inggris", d: ["A", "H", "-"] },
-  { n: "BELA KHARISMA RAHMA DEWIANI", k: "XI - B", e: "Bahasa Inggris", d: ["A", "I", "-"] },
-  { n: "DHAIFA ALYA HIDAYAH", k: "XI - B", e: "Bahasa Inggris", d: ["A", "I", "-"] },
-  { n: "NOFAYLA AYU NANDIRA", k: "XI - B", e: "Bahasa Inggris", d: ["A", "H", "-"] },
-  { n: "RISMA WULAN DARI", k: "XI - B", e: "Bahasa Inggris", d: ["H", "H", "-"] },
-  { n: "LANGIT RAMADHANI SUTRISNO PUTRI", k: "XI - C", e: "Bahasa Inggris", d: ["H", "H", "-"] },
-  { n: "ANEIRA ARKANEISYA KARIM", k: "XI - D", e: "Bahasa Inggris", d: ["A", "H", "-"] },
-  { n: "REVA KHAFIDZATUL RIZQI", k: "XI - D", e: "Bahasa Inggris", d: ["A", "H", "-"] },
-  { n: "YUHROTUN AIDA", k: "XI - D", e: "Bahasa Inggris", d: ["I", "H", "-"] },
-  { n: "FINA HIMATUL ULYA", k: "XI - E", e: "Bahasa Inggris", d: ["I", "H", "-"] },
-  { n: "SAKINAH KHOIRUN NISA", k: "XI - J", e: "Bahasa Inggris", d: ["A", "H", "-"] },
-  { n: "AHSANU NADIYYA", k: "XI - K", e: "Bahasa Inggris", d: ["H", "H", "-"] },
-  { n: "ZARQA SYAFIEQ WARDAH AL MUNA", k: "XI - K", e: "Bahasa Inggris", d: ["A", "H", "-"] },
-  { n: "DEALISSYA OKTAFIA", k: "XI - L", e: "Bahasa Inggris", d: ["A", "H", "-"] },
-  { n: "NASYADA AZMI MEYSSIANA", k: "XI - L", e: "Bahasa Inggris", d: ["A", "H", "-"] },
-  { n: "RAIHANA YASMINA FAIHA", k: "X - A", e: "Bahasa Jawa", d: ["H", "H", "A"] },
-  { n: "SUCI RIZQIANA RIKFI", k: "X - A", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "MAULYDA BALQUES", k: "X - D", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "LINGGAR FAJRI CALLIESTASWARI", k: "X - E", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "FIDA SALSABILA RAFIFAH MARUF", k: "X - G", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "MUFIDAH KHOIRUN NISSA", k: "X - G", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "NUHA ALFIYAH", k: "X - G", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "IKHWAH ZAKIYATUL ADZKIYA", k: "X - H", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "MAY ADIBA RAHMA", k: "X - H", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "ATIKA FADLIATUTS TSANIA", k: "X - I", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "ILMA CHOLISATUL LUTFIANA", k: "X - I", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "AHMAD MUHAFID", k: "XI - A", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "MAULIDA MUSAROH", k: "XI - E", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "DHIA ANIS SAUQI", k: "XI - I", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "MUHAMMAD KHOIRIAN SUGITO", k: "XI - I", e: "Bahasa Jawa", d: ["H", "H", "H"] },
-  { n: "ELLIZA AMELIA PUTRI", k: "XI - K", e: "Bahasa Jawa", d: ["A", "H", "A"] },
-  { n: "ATALAH ADHARU", k: "X - C", e: "Basket", d: ["H", "H", "H"] },
-  { n: "DEAN AZMI HARIS ALBANNA", k: "X - E", e: "Basket", d: ["H", "H", "A"] },
-  { n: "DEA ANANDA PUTRI", k: "X - F", e: "Basket", d: ["A", "H", "A"] },
-  { n: "FAKHRI ROJA", k: "X - F", e: "Basket", d: ["H", "H", "H"] },
-  { n: "JULIAN UMAR PASHA", k: "X - F", e: "Basket", d: ["A", "A", "A"] },
-  { n: "ALLIERA SASI KIRANA", k: "X - G", e: "Basket", d: ["A", "H", "H"] },
-  { n: "ALIYA MILA SIFA", k: "X - I", e: "Basket", d: ["A", "H", "A"] },
-  { n: "AFFAN TAMAMA", k: "X - J", e: "Basket", d: ["-", "H", "H"] },
-  { n: "HADYAN MURSYIDAN ASSEGHAF", k: "XI - C", e: "Basket", d: ["H", "H", "A"] },
-  { n: "IVA MIFTAKHUL ULUM", k: "XI - C", e: "Basket", d: ["A", "A", "A"] },
-  { n: "SAD SILVIANI AMANAH", k: "XI - C", e: "Basket", d: ["A", "A", "A"] },
-  { n: "KHANSA CANTIKA AL-LATIFAH", k: "XI - E", e: "Basket", d: ["A", "A", "H"] },
-  { n: "REHAN YUDHA PRATAMA", k: "XI - E", e: "Basket", d: ["H", "H", "H"] },
-  { n: "M RISKON FINJI", k: "XI - F", e: "Basket", d: ["A", "A", "A"] },
-  { n: "FADHILAH LAILA SAFITRI", k: "XI - H", e: "Basket", d: ["A", "A", "H"] },
-  { n: "KAYLLA MUTIARA CINTA SUCI", k: "XI - H", e: "Basket", d: ["A", "A", "H"] },
-  { n: "QHOIRUN NISA APRILLIA AYU WULANDARI", k: "XI - J", e: "Basket", d: ["A", "S", "S"] },
-  { n: "ARINA NILNA MUNA", k: "XI - L", e: "Basket", d: ["A", "A", "A"] },
-  { n: "BEBYOLA ASTA JUARA", k: "XI - L", e: "Basket", d: ["A", "A", "H"] },
-  { n: "ZIDNY AL HAYAN", k: "X - A", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "NADIA FARHANA", k: "X - B", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "ZAQI NUR HALIM", k: "X - D", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "KHOTRUN NIDA MUNAWAROH", k: "X - E", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "MEISI NUR ISNAENI", k: "X - E", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "SYARIEF ALI PANDHEGA", k: "X - E", e: "Bola Voli", d: ["H", "H", "S"] },
-  { n: "HIDAYAT NURROHMAN", k: "X - F", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "RHENO FIRDAUS", k: "X - F", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "MUFIDATUN KHASANAH", k: "X - G", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "YASMIN GHALIYAH", k: "X - G", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "DANU PRATHAMA", k: "X - H", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "ADENA ATHARIQ ILMI", k: "X - I", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "AFIF SHOFI MUBAROK", k: "X - I", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "KHUSAIN DIYAK UDIN", k: "X - I", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "MUHAMMAD KHOIRUL AKBAR", k: "X - J", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "VELLITA", k: "X - J", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "WAHYU ATIKA", k: "X - J", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "WILDANUL AZKA YUSUF", k: "X - J", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "ELHASSYA PUTRI LESTARI", k: "X - K", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "SHERIN MAY HALIZA", k: "X - K", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "SOFIYATUL MUSTAFIDAH", k: "X - K", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "KHULWAH GHIFARUL MANNA", k: "XI - A", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "RIANA NUR LATIFAH", k: "XI - A", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "RISMA WULAN DARI", k: "XI - B", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "ULFA SHARIFATUL AZIZAH", k: "XI - B", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "MUHAMMAD RAFID ALMUJALID", k: "XI - C", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "ACHMAD MANAHILUL IRFAN", k: "XI - E", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "HALILINTAR PUTRA AKHMAD", k: "XI - E", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "M.FATIKHUR RIZKI", k: "XI - E", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "MUFTI ABRORI", k: "XI - F", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "MUHAMMAD SALMAN AL FARIZI", k: "XI - F", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "RISMA ISNAINI SHOLEHAH", k: "XI - F", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "DINA SAADATUL MUFIDA", k: "XI - G", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "ZULFA DIATAMA", k: "XI - G", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "AMALIA NUR FARIFA", k: "XI - H", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "AFAF AL KAFAH", k: "XI - I", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "AHMAD IBNU MAHFUDZ", k: "XI - I", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "MAZAYA AYU", k: "XI - I", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "SINTA RAHAYU", k: "XI - I", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "ZAHROTUN NAFINGAH", k: "XI - I", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "DWI SAFITRI", k: "XI - K", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "JARON PUTRA ADITYA", k: "XI - K", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "ARJUNA MICHAEL MATIEN", k: "XI - L", e: "Bola Voli", d: ["H", "H", "A"] },
-  { n: "M ALI MAHFUZI", k: "XI - L", e: "Bola Voli", d: ["H", "H", "H"] },
-  { n: "DAMAR SUTOMO", k: "X - A", e: "Bulutangkis", d: ["I", "A", "A"] },
-  { n: "MUHAMMAD NURIL CHADZIEQ", k: "X - A", e: "Bulutangkis", d: ["H", "H", "A"] },
-  { n: "AFAF SAYIDIL AKWAN", k: "X - B", e: "Bulutangkis", d: ["H", "H", "H"] },
-  { n: "ELSA ZUHROTUN NAJWA", k: "X - B", e: "Bulutangkis", d: ["H", "H", "H"] },
-  { n: "FATHAN SABIL RIZQULLOH", k: "X - B", e: "Bulutangkis", d: ["H", "H", "H"] },
-  { n: "MUHAMMAD ZIDNA HILMAN WAHID", k: "X - B", e: "Bulutangkis", d: ["H", "H", "H"] },
-  { n: "DITA DWI APRILIA", k: "X - D", e: "Bulutangkis", d: ["H", "A", "H"] },
-  { n: "GILANG LUTHFI ARDI", k: "X - E", e: "Bulutangkis", d: ["H", "H", "H"] },
-  { n: "ADIFTA RISKY PRATAMA", k: "X - I", e: "Bulutangkis", d: ["I", "I", "H"] },
-  { n: "HANAN MANSHUR", k: "X - I", e: "Bulutangkis", d: ["A", "A", "H"] },
-  { n: "SALSABILA RAHADATUL AISY", k: "X - J", e: "Bulutangkis", d: ["H", "H", "H"] },
-  { n: "LENI NAYLATUS SILNMI", k: "X - K", e: "Bulutangkis", d: ["A", "A", "S"] },
-  { n: "NURITA AKHSANULKHUSNA", k: "XI - A", e: "Bulutangkis", d: ["H", "H", "I"] },
-  { n: "FEBRIANA WAHDINY HIDAYAH", k: "XI - C", e: "Bulutangkis", d: ["I", "H", "H"] },
-  { n: "RAHMA DHANY", k: "XI - C", e: "Bulutangkis", d: ["H", "H", "I"] },
-  { n: "FAYASA LAELA LUSIFA", k: "XI - E", e: "Bulutangkis", d: ["I", "A", "A"] },
-  { n: "MOH.ALIFULLAH GHOZYL HAQQY", k: "XI - I", e: "Bulutangkis", d: ["A", "A", "A"] },
-  { n: "SITI AISYAH", k: "XI - I", e: "Bulutangkis", d: ["A", "A", "A"] },
-  { n: "FAIRUS SYIFA QURATUAIN", k: "XI - K", e: "Bulutangkis", d: ["A", "H", "H"] },
-  { n: "MAZAH KHODIJATUL AFIFAH", k: "XI - L", e: "Bulutangkis", d: ["A", "A", "A"] },
-  { n: "AHMAD MIQDAD IRTIZA ZEN", k: "X - B", e: "Cinematografi", d: ["H", "I", "H"] },
-  { n: "ALMIRA RIZKIANA YASYFA", k: "X - B", e: "Cinematografi", d: ["H", "H", "H"] },
-  { n: "ALISSA FARAH QOTRUNNADA", k: "X - C", e: "Cinematografi", d: ["H", "H", "H"] },
-  { n: "NADIA IZA NOVIANA", k: "X - C", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "ZAZKIATUL FIKRIAH", k: "X - C", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "ARINA AHSANA NADYA", k: "X - D", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "HIMATUL ALIYAH", k: "X - D", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "AISHA RIDA SAKHI", k: "X - E", e: "Cinematografi", d: ["H", "H", "H"] },
-  { n: "LATIFATUNNISA ASYHARI", k: "X - E", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "MUHAMMAD SOFIL FIKRI", k: "X - E", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "SATRIA ADI FIRMANSYAH", k: "X - E", e: "Cinematografi", d: ["H", "H", "H"] },
-  { n: "ANNIDA LAELATUS SYIFA", k: "X - G", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "MUFIDATUN KHASANAH", k: "X - G", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "WAFIQ FAHIRA ZAIN", k: "X - G", e: "Cinematografi", d: ["H", "H", "H"] },
-  { n: "RIALATUNNIMAH WAFIQ ZUFAIZAH", k: "X - K", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "ULFA IKMANIA", k: "X - K", e: "Cinematografi", d: ["H", "H", "H"] },
-  { n: "NAILA NAJWA", k: "XI - B", e: "Cinematografi", d: ["H", "H", "H"] },
-  { n: "INTAN NUR AINI", k: "XI - C", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "LISA ALFINA KHUSNAWATI", k: "XI - D", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "AZZAH SYADZA NAHDA", k: "XI - E", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "SYIFA NAILU SAADAH", k: "XI - F", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "FIEN SAADATUN NAYLA", k: "XI - G", e: "Cinematografi", d: ["H", "H", "H"] },
-  { n: "KEYSHA NAZWA WAHYU NINGTYAS", k: "XI - G", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "SAFIRA MAULINA SILMI", k: "XI - G", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "MALHALUNA SYAQUILA", k: "XI - H", e: "Cinematografi", d: ["H", "H", "H"] },
-  { n: "ALDILA AIRIN AENI", k: "XI - J", e: "Cinematografi", d: ["H", "A", "A"] },
-  { n: "DIAZ ZAHWA MAULIDA", k: "XI - K", e: "Cinematografi", d: ["H", "A", "A"] },
-  { n: "TAZKIA HUMAIRA KAENI PUTRI", k: "XI - K", e: "Cinematografi", d: ["H", "H", "A"] },
-  { n: "SIREN KHAFIFAH ARAHMAN", k: "XI - L", e: "Cinematografi", d: ["H", "H", "H"] },
-  { n: "ARFAN ZIDNI ASSADID", k: "X - A", e: "Desain Grafis", d: ["H", "-", "H"] },
-  { n: "FIKI FARIKHATI", k: "X - A", e: "Desain Grafis", d: ["H", "-", "H"] },
-  { n: "FASICHA AQLA NAFAH", k: "X - C", e: "Desain Grafis", d: ["A", "-", "H"] },
-  { n: "VANIA SILVIA RAMADHANI", k: "X - F", e: "Desain Grafis", d: ["A", "-", "A"] },
-  { n: "AISY SHOFIYYUL AINI", k: "X - K", e: "Desain Grafis", d: ["A", "-", "H"] },
-  { n: "BAGUS MUHAMMAD AL-FAQIH", k: "XI - E", e: "Desain Grafis", d: ["I", "-", "H"] },
-  { n: "ITSNA MARATUS SHOLIHAH", k: "XI - L", e: "Desain Grafis", d: ["A", "-", "A"] },
-  { n: "M SAIQ MARUF", k: "X - A", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "RIFQOH AULIYAH", k: "X - A", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "MAZIYA AKMALIYA ULFA", k: "X - B", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "CHANINA NAURIN NAJA", k: "X - D", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "FAHRUR RIZIQ KIROM", k: "X - D", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "FAKHRY ADAM QUSHAY", k: "X - D", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "ASHFANAYA RISHFA ANNURIYA", k: "X - E", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "MUYA SIVATUL LATHIFA", k: "X - E", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "TSANIA MARWA", k: "X - E", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "KAFKA ALIZA", k: "X - F", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "ADILA DEVI FARIZKY", k: "X - G", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "MEIKA ANDINITA SALSA", k: "X - I", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "WANDA WILDA UMMI ZAKIYAH", k: "X - I", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "ASYIFA DEVI FARIZKA", k: "X - J", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "ATINA ULINNUHA KHOLIDA ASYKAR", k: "X - J", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "DIANA APRILIA UTAMI", k: "X - J", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "HANA GHAIS ANJAUZA", k: "X - J", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "HANI ANISSYAFIAH", k: "X - J", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "MUHAMMAD AL MUSHHAF", k: "X - J", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "MUHAMMAD ZAINAL ARIFIN", k: "X - J", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "KHALILA TALITA ZAHRAN", k: "X - K", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "NAJMA ZENI OKTAVIONA", k: "X - K", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "ZAHRUL AL FAHIDIN", k: "X - K", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "LUBNA AYUMNA", k: "XI - C", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "MUHAMMAD FAIZ SETIAWAN", k: "XI - C", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "FAIQOH FEBRIANA", k: "XI - E", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "MAGHFIROTUR ROHMAH", k: "XI - G", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "NAESYA AYU MUFIDA", k: "XI - G", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "ROJWANA FARAKHIYA S", k: "XI - G", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "KAFIYA AININ NADA", k: "XI - H", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "KHAIRUNNISA NANDA KIRANA", k: "XI - H", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "MUHAMMAD FARUQ HAQIQI", k: "XI - H", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "NIMATUSSAFINAH", k: "XI - H", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "DEWI NUR LAILI", k: "XI - I", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "DHEA SANDY AULIA", k: "XI - J", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "AMARA BILQISTH SHOLATIN", k: "XI - K", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "KHARISMA YOGI NOVIANA", k: "XI - K", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "ZAHRA MUTHIA KHANZA", k: "XI - K", e: "Fotografi", d: ["H", "-", "-"] },
-  { n: "VINJAZ YASSA AMANDANGI", k: "X - A", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "BINTANG FATKHAN AFADHIL", k: "X - B", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "FASHA RIANG ADITYA", k: "X - C", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "TEGAR TRI PAMBUDI", k: "X - C", e: "Futsal", d: ["A", "A", "A"] },
-  { n: "PUTRI AATIKA SALWAA", k: "X - D", e: "Futsal", d: ["A", "A", "A"] },
-  { n: "MUHAMMAD RIZKA AMIQ", k: "X - F", e: "Futsal", d: ["H", "H", "A"] },
-  { n: "ADILA DEVI FARIZKY", k: "X - G", e: "Futsal", d: ["A", "A", "A"] },
-  { n: "SITI FATKHURIZQOH", k: "X - G", e: "Futsal", d: ["A", "A", "A"] },
-  { n: "AHMAD HILMI RIQULLAH", k: "X - H", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "ANANDA PRIA KHARISMA", k: "X - H", e: "Futsal", d: ["H", "H", "A"] },
-  { n: "CHORI FARIKHATU NISA", k: "X - H", e: "Futsal", d: ["A", "A", "A"] },
-  { n: "MUHAMMAD ALFA RIZKY", k: "X - H", e: "Futsal", d: ["-", "H", "H"] },
-  { n: "MUHAMMAD HAIDAR RASYAD", k: "X - H", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "ZULFA HALIMATUL AINI", k: "X - H", e: "Futsal", d: ["A", "A", "A"] },
-  { n: "KEISYA LISATI RIGIYAN PUTRI ZAFA", k: "X - I", e: "Futsal", d: ["A", "A", "A"] },
-  { n: "KUN ANIS KHAFIDZOTUL HASNA", k: "X - I", e: "Futsal", d: ["A", "A", "A"] },
-  { n: "M. IHFAD LISANI", k: "X - I", e: "Futsal", d: ["A", "H", "H"] },
-  { n: "MUHAMMAD FADLUNNAJAH", k: "X - I", e: "Futsal", d: ["A", "H", "A"] },
-  { n: "AHMAD FAOYI", k: "X - J", e: "Futsal", d: ["A", "H", "H"] },
-  { n: "RAFHA CHAERUL AZZAM", k: "X - J", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "ARIEF KURNIAWAN", k: "X - K", e: "Futsal", d: ["H", "H", "A"] },
-  { n: "RIDHO FIRMANSAH", k: "X - K", e: "Futsal", d: ["S", "A", "A"] },
-  { n: "RIKA AMALIA SALSABIL", k: "X - K", e: "Futsal", d: ["A", "-", "-"] },
-  { n: "AZZIZAN RAKA ABDILLA", k: "XI - E", e: "Futsal", d: ["H", "I", "A"] },
-  { n: "GHANI AWALUDIN RABBANI", k: "XI - E", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "AKHTAR SYARIATI HIBATULLAH", k: "XI - G", e: "Futsal", d: ["A", "H", "H"] },
-  { n: "IBNU AFLAH", k: "XI - G", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "AHMAD KAHFI YAMIN", k: "XI - I", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "GILANG RAMADHAN", k: "XI - I", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "HILMAN BAIHAQI HIDAYAT", k: "XI - I", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "M.AFHIF NUR FAHRUL ANAM", k: "XI - I", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "MUHAMAD FATIH", k: "XI - I", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "MUHAMMAD KEVYAN ALMUNAJ", k: "XI - J", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "ABDUL KHANIF AL_HAQ", k: "XI - K", e: "Futsal", d: ["A", "H", "H"] },
-  { n: "MUHAMAD GILANG RIZQI", k: "XI - K", e: "Futsal", d: ["A", "H", "H"] },
-  { n: "MUHAMMAD RODIT ARZAK", k: "XI - K", e: "Futsal", d: ["A", "H", "I"] },
-  { n: "ZAIDAN ROFIQ MAHBUB", k: "XI - K", e: "Futsal", d: ["A", "A", "H"] },
-  { n: "M. DWI IMAM FARHAN", k: "XI - L", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "YUSUF MUIZZUL FARHANY", k: "XI - L", e: "Futsal", d: ["H", "H", "H"] },
-  { n: "DINI FATMA AZZAHRA", k: "X - D", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "GALISHA SALSA BILKHUSNA", k: "X - D", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "NUR ALIYAH NABILAH", k: "X - D", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "QUINSHA AISWARA MAHDDINAR", k: "X - D", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "OKTAVIANA MELISA NUR FITRI", k: "X - F", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "VIRA FEBIANAAZZAHRA", k: "X - H", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "HILWA KHALISAH WIDAD AINUL YAQIN", k: "X - I", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "IKFA ZULFIANA SOFFA", k: "X - I", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "RENANDA EDY GITA SURYANA", k: "X - I", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "HAFIDZOTUNISA", k: "X - K", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "OSY CALLISTA", k: "X - K", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "ANNIDA KHOIRUNNISA WIDYANINGRUM", k: "XI - A", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "DWI CAHAYA SHOLIHATI SUHENDAR", k: "XI - B", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "JIHAN YURFAUL ULUWI", k: "XI - B", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "NAFIAH LAYLATUL MAGHFIRA", k: "XI - B", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "ADINDA ZAHRA LUTFIANJANI", k: "XI - C", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "KUSUMA DIANA HAPSARI", k: "XI - C", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "LUHUR GINANJAR PRAYOGA", k: "XI - C", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "BUNGA ALIFIA ARDIANI", k: "XI - D", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "LIDYA FITRIYANI", k: "XI - D", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "AFFA LAELATUN NADA", k: "XI - E", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "CHILYA AINA", k: "XI - E", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "FAILASUFA ISMA DIANAAZIZA", k: "XI - F", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "MUHAMMAD TAUFIQUROHMAN", k: "XI - F", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "NABILA AZZAHRA", k: "XI - F", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "MILATINA SHOLIHAH", k: "XI - G", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "BARIKA AZKA MINNATITTAMMI", k: "XI - H", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "KHUROH HILDA MAFAZA", k: "XI - H", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "MADINA WIRDATUL AULIA", k: "XI - H", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "MELLANI MATUVANI", k: "XI - H", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "VANYA TRI ANGGRAENI", k: "XI - H", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "INAYATUL FAUZIAH AL MUKROMAH", k: "XI - I", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "WINDA DWI AGUSTINA", k: "XI - I", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "FAZA NILFANA SOFA", k: "XI - J", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "HANA AULIA SALSABILA", k: "XI - K", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "WAFA NUR KAMILA", k: "XI - L", e: "Home Industri (Seni Kriya)", d: ["H", "H", "H"] },
-  { n: "ALFAN HIDAYAT", k: "X - C", e: "IRMAS", d: ["H", "H", "-"] },
-  { n: "PUTRI PRASTIWI INAYAH ABBAS", k: "X - C", e: "IRMAS", d: ["I", "I", "-"] },
-  { n: "SYAUQI AL HAQ", k: "X - D", e: "IRMAS", d: ["H", "H", "-"] },
-  { n: "USMAN HIFDZI ZAIN", k: "X - D", e: "IRMAS", d: ["H", "H", "-"] },
-  { n: "IKLIMA FAINUDILLA", k: "X - F", e: "IRMAS", d: ["I", "I", "-"] },
-  { n: "HAFIZ MUAZAM FIRJATULLAH", k: "X - G", e: "IRMAS", d: ["H", "H", "-"] },
-  { n: "MUHAMMAD AZKA FAROZDAQ", k: "X - G", e: "IRMAS", d: ["I", "I", "-"] },
-  { n: "MUHAMMAD KHOIRU UBAIDILLAH", k: "X - G", e: "IRMAS", d: ["H", "H", "-"] },
-  { n: "MOH SYARIFUDIN AKMAL", k: "X - H", e: "IRMAS", d: ["H", "H", "-"] },
-  { n: "ANINDYA QUANEYSHA FATIN", k: "X - K", e: "IRMAS", d: ["I", "-", "-"] },
-  { n: "DJIANDRA ARKHANI BAKTI", k: "X - K", e: "IRMAS", d: ["H", "H", "-"] },
-  { n: "HASBULLAH", k: "X - K", e: "IRMAS", d: ["H", "H", "-"] },
-  { n: "ASKIA RIZKI RAHMA AULIA", k: "XI - G", e: "IRMAS", d: ["I", "I", "-"] },
-  { n: "SAFIRA MAZAYA RAHMAH", k: "XI - G", e: "IRMAS", d: ["H", "I", "-"] },
-  { n: "NAJWA JAMILATUL ILMA", k: "XI - K", e: "IRMAS", d: ["H", "I", "-"] },
-  { n: "AKHWALIA NAFIDZA UZMA", k: "X - A", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "KHASNITA ALFI FUAIDA EL-YAD", k: "X - A", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "KHUMAIRATUL MUNA", k: "X - A", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "QUININA TRI YULIANA", k: "X - A", e: "Jahit", d: ["H", "H", "I"] },
-  { n: "ZAHWA TRI ANGGRAENI", k: "X - A", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "SULI SEPTI RAMADANI", k: "X - B", e: "Jahit", d: ["H", "H", "H"] },
-  { n: "AZZAHRA KHOIRUNNISA", k: "X - C", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "TIARA SYAHIDAH AZKA", k: "X - C", e: "Jahit", d: ["A", "A", "H"] },
-  { n: "BAQIYATUS SOLIKHAH", k: "X - D", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "FUZA RAHMANIAH", k: "X - D", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "SELMA IFADA", k: "X - D", e: "Jahit", d: ["H", "H", "H"] },
-  { n: "ZAKYAH RIZQIANY", k: "X - D", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "RENITA NOVA LISTIANI", k: "X - E", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "TITIS KHAIRINA MANGGALA", k: "X - E", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "RANI MULYA LESTARI", k: "X - F", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "SITI DELA PUSPITA", k: "X - F", e: "Jahit", d: ["A", "A", "H"] },
-  { n: "MUFIDAH AINUL HAYAH", k: "X - G", e: "Jahit", d: ["H", "H", "S"] },
-  { n: "AHMAD KHILMI RISQULLAH", k: "X - H", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "M ABI TORIK", k: "X - H", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "MUHAMMAD ALFA RIZKY", k: "X - H", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "NAVA DWI ARIANI", k: "X - H", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "SALIMA RIZKI AWALIA", k: "X - H", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "SYAKIRA AZ ZAHRA", k: "X - H", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "TITIS KHAIRANI MANGGALI", k: "X - H", e: "Jahit", d: ["A", "A", "H"] },
-  { n: "KARIMATUSSICHA AZZAHRA", k: "X - I", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "SAIFA AMIROTUL HULWUNI HIDYATURROHMAH", k: "X - J", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "SYIFA FAOZIA", k: "X - J", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "ANDIRA MEKA NUR ZAHWA", k: "X - K", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "IRBAH SABILA ZAHRA", k: "X - K", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "YANFAONI RAHMATIKA MUSTAFIDZA", k: "X - K", e: "Jahit", d: ["H", "H", "H"] },
-  { n: "KHILYATUN NAWA AL ISLAH", k: "XI - A", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "NAFEEZA FADHELA RAMADHANI", k: "XI - A", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "NUR ALIYATUN NISA", k: "XI - B", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "AULIA ZULFA RAMADHANI", k: "XI - C", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "IKA DINTA APRILIA", k: "XI - D", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "ISMIATUN KHASANAH", k: "XI - D", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "ALIKA OKTAVIYANTI", k: "XI - E", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "ASFA IZZATA ZIHNI", k: "XI - E", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "CHATYA NUR ANNAHARI", k: "XI - F", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "HANIFAH ILMIRA", k: "XI - F", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "KATARINA KARLIN", k: "XI - F", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "SYIFA TAZKIYATUNNISA", k: "XI - F", e: "Jahit", d: ["H", "A", "A"] },
-  { n: "DWI AYU RAHMAWATI", k: "XI - G", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "SYAFIRA AULIA ADELINA", k: "XI - G", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "ANDIN NAILA AZKIA", k: "XI - H", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "MAYA AZKARANI", k: "XI - H", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "NAFISHA QORI LUTFIYANA", k: "XI - H", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "FATIKHATIN FAUZIAH FITROH", k: "XI - I", e: "Jahit", d: ["A", "H", "A"] },
-  { n: "NUR FASIKHA", k: "XI - J", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "SAFIRA NOOR MUGHITSAH", k: "XI - J", e: "Jahit", d: ["A", "A", "A"] },
-  { n: "AURA DIVA FAZALINA", k: "XI - K", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "ZULFA FITRIYANA", k: "XI - K", e: "Jahit", d: ["A", "S", "H"] },
-  { n: "FINA FARIKHAH", k: "XI - L", e: "Jahit", d: ["A", "H", "H"] },
-  { n: "DEWI ZAHRATUN NAFIAH", k: "X - A", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "NINDYA SHAFI PRABA", k: "X - A", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "TATY NABILAH", k: "X - B", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "ALWI ALKHAFSY", k: "X - C", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "SYIFA HOLIDATUL UMAH", k: "X - F", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "CHABIEBAH NAFIESAH A", k: "X - I", e: "Jurnalistik", d: ["I", "I", "-"] },
-  { n: "NINDIANA ALTHAFUNNISA", k: "X - J", e: "Jurnalistik", d: ["H", "I", "-"] },
-  { n: "SYIFAUL IKRIMATUSSOLIKHAH", k: "XI - A", e: "Jurnalistik", d: ["I", "H", "-"] },
-  { n: "FAIZAN SURONO", k: "XI - B", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "FARAH ARISTAWATI", k: "XI - B", e: "Jurnalistik", d: ["H", "I", "-"] },
-  { n: "JANEETA ANNAURA TABILA", k: "XI - B", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "NABILA AFIFATUZ ZAHRA", k: "XI - B", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "SYALWA HAYYIN IZZA DUANDANI", k: "XI - B", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "ZIYAN KAMIL MUSHOFFA", k: "XI - B", e: "Jurnalistik", d: ["I", "I", "-"] },
-  { n: "ELVY ZAHRA ANISA", k: "XI - C", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "FITTAHANI AISYA WA MAULIDA", k: "XI - C", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "ILYAS MAJDUN GHINAN", k: "XI - C", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "ZAKKYA MAULIN NISSA", k: "XI - C", e: "Jurnalistik", d: ["S", "H", "-"] },
-  { n: "YAYAN", k: "XI - D", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "ATIKA DWI MAHARANI", k: "XI - E", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "NAILY NUR FAIZA", k: "XI - E", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "YASIROTUL MAUUNA", k: "XI - H", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "CHITYA NUR ROHANI", k: "XI - J", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "ADITA MAGHFIRATUN NISA", k: "XI - L", e: "Jurnalistik", d: ["H", "H", "-"] },
-  { n: "MUHAMMAD ROYYAN ANABA", k: "X - A", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "SYARAH AWALIYAH MUBAROKAH", k: "X - A", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "ZILDA SAFITRI", k: "X - A", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "Aldhea Sessi Alyska", k: "X - B", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "ALIFIA ZULFAL HANA", k: "X - B", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "BALQIS AL KHUMAIRA", k: "X - B", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "DEWI KUSUMA NINGRUM", k: "X - B", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "Fayyadh Muhammad Adani", k: "X - B", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "IKFINA KAMALIA RIZKI", k: "X - B", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "KARENINA ANGELIA PUTRI GHUFRON", k: "X - B", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "KEZIA AULIA AZ ZAHRA", k: "X - B", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "NADIA FARHANA", k: "X - B", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "NAFLA SYAKIRA", k: "X - B", e: "Karya Ilmiah Remaja", d: ["-", "I", "-"] },
-  { n: "NURUL ASSYIFA", k: "X - B", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "VERNITA SABNGI RAMADHANI", k: "X - E", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "ALYA AZZAHRA FADISYA", k: "X - F", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "NAZILA KHUSNA DEVI", k: "X - F", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "DURROTUN NASHIKHAH", k: "X - G", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "MUHAMMAD WILDAN ABDILLAH", k: "X - G", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "BADIU ZAHROTUN NAFISAH", k: "X - H", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "HANIN FATHAN CHOERIYAH", k: "X - H", e: "Karya Ilmiah Remaja", d: ["-", "I", "-"] },
-  { n: "NURUL AYATUL HUSNA", k: "X - H", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "SYIFA ALMI ZAKIYA", k: "X - I", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "HANNATUL UMMAH", k: "X - J", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "NADIA KUMARA", k: "XI - A", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "NAILI ELSA SYARIFA", k: "XI - A", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "NAJMA NUR NAHDIANA", k: "XI - A", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "SYIFA AJWAH AL-MADANI", k: "XI - A", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "FIRDA NUUR AZKIYA", k: "XI - B", e: "Karya Ilmiah Remaja", d: ["-", "S", "-"] },
-  { n: "ULIMAZ THYRA", k: "XI - B", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "FIKHRIS SYAKINA AMRI", k: "XI - C", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "NAURA AULIYAA MALIKA", k: "XI - C", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "AKIFA NAILA ROSYDIANA", k: "XI - D", e: "Karya Ilmiah Remaja", d: ["-", "H", "-"] },
-  { n: "BUNGA SAFITRI", k: "X - A", e: "Palang Merah Remaja", d: ["H", "H", "I"] },
-  { n: "ISTAHERA MAULIDA KAMILA ZAIN", k: "X - A", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "NAKHBATUN NAJWA TAQIANI", k: "X - A", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "NASHIHATUM MADIHAH", k: "X - A", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "OKA ALFIANA SALWA", k: "X - A", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "YUNI SAYYIDATI LAELATUL ROHMAH", k: "X - A", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "SATRIA BUNGAS NUGRAHA", k: "X - B", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "AURORA RAHMAWATI", k: "X - C", e: "Palang Merah Remaja", d: ["A", "H", "H"] },
-  { n: "HARISA QURROTA AYUNI", k: "X - C", e: "Palang Merah Remaja", d: ["S", "H", "H"] },
-  { n: "NAFISATUL AZIZAH", k: "X - C", e: "Palang Merah Remaja", d: ["S", "H", "H"] },
-  { n: "SHAQILA TSAQIB QOTRUNNADA", k: "X - C", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "TSANIA MAIMANAH AZMI", k: "X - C", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "ZIDNA NADIYA KHASNA", k: "X - D", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "ANIS KHUZAIMAH FITRI", k: "X - E", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "ARO ZAITII BILBINA", k: "X - E", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "ASHFANAYA RISHFA ANNURIYA", k: "X - E", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "SAMANTA QUANEISHA SALSABILA", k: "X - E", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "NADHIFAH ZAHRA OKTALITA DINI", k: "X - F", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "NAYLA CAHAYA PUTRI", k: "X - F", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "SYIFA GALUH NURFATIKAH", k: "X - F", e: "Palang Merah Remaja", d: ["H", "H", "I"] },
-  { n: "NAFIS AZZA", k: "X - G", e: "Palang Merah Remaja", d: ["I", "H", "H"] },
-  { n: "SHOFIANA NURUL AROFAH", k: "X - G", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "UMI NADZROTUNNAZILAH", k: "X - G", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "JIHAN FARRAS MUMTAZAH", k: "X - J", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "REFINA NUR APRILIA", k: "X - J", e: "Palang Merah Remaja", d: ["H", "H", "I"] },
-  { n: "SALMA DWI YUANITA", k: "X - J", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "KUNI MALIKHATUS SOLIKHAH", k: "X - K", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "KARISA PUTRI AULYA", k: "XI - A", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "MAYSA TSUROYYA", k: "XI - A", e: "Palang Merah Remaja", d: ["A", "H", "A"] },
-  { n: "NISA NUR ROHMAH", k: "XI - A", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "FIKA RUHANDINI", k: "XI - B", e: "Palang Merah Remaja", d: ["A", "H", "H"] },
-  { n: "RIFAT ANJA ULUF MALUFAH", k: "XI - B", e: "Palang Merah Remaja", d: ["H", "H", "A"] },
-  { n: "SYAFA RRAHMATIKA", k: "XI - B", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "MUTIARA ANNISA FAUZIAH ALMARUF", k: "XI - D", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "FALIHAH AL HASNA", k: "XI - E", e: "Palang Merah Remaja", d: ["S", "A", "H"] },
-  { n: "KANIA YULIANA KARIEN", k: "XI - E", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "PUTRI NAJIBA SHOUFIS TSANI", k: "XI - G", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "SAZKIA LOVITA ARFANI", k: "XI - G", e: "Palang Merah Remaja", d: ["A", "A", "A"] },
-  { n: "ATIQOTUN NAFISAH", k: "XI - H", e: "Palang Merah Remaja", d: ["A", "H", "A"] },
-  { n: "TARA MEI LIANA", k: "XI - H", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "ALMIRA RAMADHANI", k: "XI - I", e: "Palang Merah Remaja", d: ["A", "A", "A"] },
-  { n: "NAHLAH AZKA BAHARI", k: "XI - I", e: "Palang Merah Remaja", d: ["S", "A", "A"] },
-  { n: "WIKA AMALIA", k: "XI - J", e: "Palang Merah Remaja", d: ["H", "H", "A"] },
-  { n: "ADIBATUN NISA", k: "XI - L", e: "Palang Merah Remaja", d: ["H", "H", "H"] },
-  { n: "AURRA SALSABILA", k: "XI - L", e: "Palang Merah Remaja", d: ["A", "H", "A"] },
-  { n: "RIZQY KHUSNA AMALIA", k: "XI - L", e: "Palang Merah Remaja", d: ["H", "A", "H"] },
-  { n: "SILVI ZAHROTUNNISAK", k: "X - B", e: "Panahan", d: ["H", "I", "H"] },
-  { n: "NAZMIL AUFA NABILAH", k: "X - E", e: "Panahan", d: ["A", "I", "H"] },
-  { n: "ZAHRA MAHDIYA EILIYAH", k: "XI - A", e: "Panahan", d: ["H", "H", "H"] },
-  { n: "CINTA NABILA SILVIYANA AKHMAD", k: "XI - B", e: "Panahan", d: ["A", "I", "H"] },
-  { n: "FATHIN FARSHANI", k: "XI - C", e: "Panahan", d: ["H", "A", "H"] },
-  { n: "ZENI SYIFA NABILA", k: "XI - C", e: "Panahan", d: ["H", "A", "H"] },
-  { n: "ARKAN TSAQIB", k: "XI - D", e: "Panahan", d: ["A", "A", "H"] },
-  { n: "AZAM ALMAS SALSABIL JUNDI", k: "XI - D", e: "Panahan", d: ["A", "H", "H"] },
-  { n: "DEWI LATHIFAH", k: "XI - D", e: "Panahan", d: ["A", "A", "H"] },
-  { n: "DINDA KHAERUNNISA", k: "XI - D", e: "Panahan", d: ["H", "H", "H"] },
-  { n: "MUHAMAD IRHAS ANANDIAWAN", k: "XI - D", e: "Panahan", d: ["A", "A", "H"] },
-  { n: "NURIL MALA ARWALU BABA", k: "XI - D", e: "Panahan", d: ["A", "I", "H"] },
-  { n: "SATHYA ADI WICAKSANA", k: "XI - D", e: "Panahan", d: ["A", "A", "H"] },
-  { n: "NATAVIA FALARANCA", k: "XI - E", e: "Panahan", d: ["H", "A", "H"] },
-  { n: "NAURA TRI GIOFANI", k: "XI - E", e: "Panahan", d: ["H", "A", "H"] },
-  { n: "NIHAYATUR RIZQI", k: "XI - E", e: "Panahan", d: ["H", "A", "H"] },
-  { n: "ADEBA ALFA FAJARINA", k: "XI - G", e: "Panahan", d: ["H", "H", "H"] },
-  { n: "ALZENA AZALIA", k: "XI - J", e: "Panahan", d: ["H", "A", "H"] },
-  { n: "NUR SYAFARILLA", k: "XI - K", e: "Panahan", d: ["A", "A", "H"] },
-  { n: "ULUL AZMI", k: "XI - K", e: "Panahan", d: ["A", "H", "H"] },
-  { n: "AISYAH ABHA NISWA", k: "X - A", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "ARINAL LUTHFIYAH", k: "X - A", e: "Pasukan Inti", d: ["H", "H", "-"] },
-  { n: "RAVENDRA AFRIANSYAH", k: "X - A", e: "Pasukan Inti", d: ["H", "H", "-"] },
-  { n: "ALDHEA SESSI ALYSKA", k: "X - B", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "FEBI INDRI NURJANATI", k: "X - B", e: "Pasukan Inti", d: ["I", "A", "-"] },
-  { n: "AISYA NURKHASYAFA", k: "X - C", e: "Pasukan Inti", d: ["H", "H", "-"] },
-  { n: "DIAN TSALAS MAULIDA", k: "X - C", e: "Pasukan Inti", d: ["S", "I", "-"] },
-  { n: "FAHRA SIVA ELIYANA", k: "X - C", e: "Pasukan Inti", d: ["H", "H", "-"] },
-  { n: "JANEETA RAHMA PUTRI", k: "X - C", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "MUHAMMAD DZULQARNAIN", k: "X - C", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "SABILA NAFISA AULIA SANI", k: "X - C", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "UMI QURROTUN NAFIS", k: "X - C", e: "Pasukan Inti", d: ["H", "I", "-"] },
-  { n: "FAZA NUR APRILIA", k: "X - D", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "GITA SEPTIA PUTRI", k: "X - D", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "SHILVIA SHALIHAH NURAINI", k: "X - D", e: "Pasukan Inti", d: ["H", "H", "-"] },
-  { n: "AISYAH MITHALINA ARDINI", k: "X - F", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "KAMELIA VISI HAYATI", k: "X - F", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "NAJWA TRI ATTANIA", k: "X - F", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "ANGGUN HOLIFIAH", k: "X - G", e: "Pasukan Inti", d: ["H", "H", "-"] },
-  { n: "AFIAH KAMILIAH", k: "X - H", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "AVIYATUN FAIZAH", k: "X - H", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "VANESA ALIVIA KIRANI", k: "X - H", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "ZULFA HALIMATUL AINI", k: "X - H", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "ANINDYA MUTHIA SYIFANI", k: "X - I", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "I MADE DAFFA PRIYO SYAFIQUL", k: "X - I", e: "Pasukan Inti", d: ["I", "S", "-"] },
-  { n: "ALYA SAFINATU ZAHRO", k: "X - K", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "EVLIN JOVANKA", k: "X - K", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "AHMAD TSAQIB TAQIYUDIN", k: "XI - A", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "AZZAHRA PUTRI CAHYADI", k: "XI - A", e: "Pasukan Inti", d: ["H", "H", "-"] },
-  { n: "FAT MASHUDIN", k: "XI - A", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "MUHAMMAD SYIFAUDDIN", k: "XI - A", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "MAULANA SHOLEHUDDIN", k: "XI - B", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "ALDAN MAULANA", k: "XI - C", e: "Pasukan Inti", d: ["H", "H", "-"] },
-  { n: "WAFA YUNA NURAINI", k: "XI - C", e: "Pasukan Inti", d: ["H", "H", "-"] },
-  { n: "ALIF TANTRA PRATUNGGA", k: "XI - D", e: "Pasukan Inti", d: ["H", "I", "-"] },
-  { n: "EMIR MUSTOFA", k: "XI - D", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "ZAHROTUSSITA", k: "XI - D", e: "Pasukan Inti", d: ["S", "H", "-"] },
-  { n: "MUHAMMAD MULKAN SAMROTUL FUAD", k: "XI - E", e: "Pasukan Inti", d: ["H", "H", "-"] },
-  { n: "DIFKY IMAM FITRAH", k: "XI - F", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "FARKHANI ZAHROH AGUSTIN", k: "XI - G", e: "Pasukan Inti", d: ["I", "I", "-"] },
-  { n: "MAAL CHRISNA KRIANTI", k: "XI - G", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "KHOLILATUL KHUMAIZAH", k: "XI - H", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "ANITA RAHAYU", k: "XI - J", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "DWI SAFITRI", k: "XI - K", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "FADHLURROHMAN MURTADHO", k: "XI - K", e: "Pasukan Inti", d: ["H", "S", "-"] },
-  { n: "MUHAMMAD BUDI MUSAFAQ", k: "XI - K", e: "Pasukan Inti", d: ["H", "H", "-"] },
-  { n: "NADIRA AZ-ZAHRA", k: "XI - K", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "NURMAYZATUL AKMAL", k: "XI - K", e: "Pasukan Inti", d: ["I", "H", "-"] },
-  { n: "SEPTI ANJANI", k: "XI - K", e: "Pasukan Inti", d: ["S", "H", "-"] },
-  { n: "ALFI KHOIROTUN NISA", k: "X - A", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "H"] },
-  { n: "AULIA MAULIDA RACHMAN", k: "X - C", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "H"] },
-  { n: "MAZAYA UMAROTUL KHULQI NISAK", k: "X - C", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "S"] },
-  { n: "MUHAMMAD LUTHFI TIRTA PRADITHA W", k: "X - C", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "H"] },
-  { n: "AHMAD SHULTON H", k: "X - E", e: "Pencak Silat (Perisai Diri)", d: ["A", "H", "H"] },
-  { n: "NAYSIFA DESTIFANI", k: "X - F", e: "Pencak Silat (Perisai Diri)", d: ["A", "H", "S"] },
-  { n: "SITI FATKHURIZQOH", k: "X - G", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "H"] },
-  { n: "VANIA RAISSA WIDYA AUFA", k: "X - G", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "H"] },
-  { n: "AISYAH NUREL AZKIA", k: "X - H", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "H"] },
-  { n: "AZKA FAUZIAH", k: "X - H", e: "Pencak Silat (Perisai Diri)", d: ["A", "H", "A"] },
-  { n: "ALFINA DWI AZIZAH", k: "X - I", e: "Pencak Silat (Perisai Diri)", d: ["I", "I", "H"] },
-  { n: "ISTINAFUR RAHMA", k: "X - I", e: "Pencak Silat (Perisai Diri)", d: ["A", "H", "H"] },
-  { n: "KUN ANIS KHAFIDZOTUL HASNA", k: "X - I", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "H"] },
-  { n: "Saifa Amirotul H", k: "X - J", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "H"] },
-  { n: "NURUL MA'RIFATUL", k: "X - K", e: "Pencak Silat (Perisai Diri)", d: ["I", "I", "H"] },
-  { n: "KHAZIMATUN FARKHANATUL HANA", k: "XI - B", e: "Pencak Silat (Perisai Diri)", d: ["A", "A", "A"] },
-  { n: "HILWA MAULIDIYA RAHMATIKA", k: "XI - F", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "S"] },
-  { n: "HILMAN BAIHAQI HIDAYAT", k: "XI - I", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "I"] },
-  { n: "MEISYA DWI MUJIRIYANTI", k: "XI - I", e: "Pencak Silat (Perisai Diri)", d: ["A", "H", "I"] },
-  { n: "ALMIRA TAZKIYA NAHDLIYA AULIA", k: "XI - J", e: "Pencak Silat (Perisai Diri)", d: ["A", "A", "A"] },
-  { n: "NURUL FACHRI AL ROJAL", k: "XI - J", e: "Pencak Silat (Perisai Diri)", d: ["H", "A", "H"] },
-  { n: "M.FAHRIYAN IRSYADI", k: "XI - K", e: "Pencak Silat (Perisai Diri)", d: ["A", "H", "H"] },
-  { n: "AGESYA ALIFATUL CHASANAH", k: "XI - L", e: "Pencak Silat (Perisai Diri)", d: ["H", "H", "H"] },
-  { n: "FERDIAN PUTRA KHOLIQ", k: "XI - L", e: "Pencak Silat (Perisai Diri)", d: ["A", "H", "A"] },
-  { n: "DEVA SABRINA FAIQOH", k: "X - A", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "NAILATUS SHOFIA", k: "X - A", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "SUCI RIZQIANA RIKFI", k: "X - A", e: "PRAMUKA", d: ["H", "A", "-"] },
-  { n: "AFAF SAYIDIL AKWAN", k: "X - B", e: "PRAMUKA", d: ["A", "A", "-"] },
-  { n: "ANINDITA A Z", k: "X - B", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "SYAFA RIZQIA NUR AFIFAH", k: "X - B", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "KHUSNIYAH HIDAYATUL FAIZAH", k: "X - C", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "HAFIZA NAFISATUL LATIFAH", k: "X - D", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "FIKA ISMATUL HAWA", k: "X - F", e: "PRAMUKA", d: ["A", "A", "-"] },
-  { n: "MUTIARA SALSABILA HAFIDZAH", k: "X - F", e: "PRAMUKA", d: ["H", "A", "-"] },
-  { n: "RAISSA ELVINA SYABANI", k: "X - F", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "RHENO FIRDAUS", k: "X - F", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "AZZA AMELIA PUTRI", k: "X - G", e: "PRAMUKA", d: ["A", "A", "-"] },
-  { n: "AGATHA LULU ZHAHIRO", k: "X - H", e: "PRAMUKA", d: ["A", "A", "-"] },
-  { n: "AZKA FAUZIAH", k: "X - H", e: "PRAMUKA", d: ["A", "A", "-"] },
-  { n: "INAYATUN MAULIDA", k: "X - J", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "ASTRID YATUS SHOLIHAH", k: "XI - A", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "LIN TAZKIYYA FUADAH", k: "XI - B", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "CHOIRIKA WAFDA", k: "XI - C", e: "PRAMUKA", d: ["A", "H", "-"] },
-  { n: "ARIJ NAJMA MUSTOFA", k: "XI - F", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "HANI FITRIANA FAUZIYAH", k: "XI - G", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "LUSI WIDI S", k: "XI - H", e: "PRAMUKA", d: ["A", "A", "-"] },
-  { n: "KEYLA RIZKA MAUDYASTUTI", k: "XI - I", e: "PRAMUKA", d: ["H", "H", "-"] },
-  { n: "FIDAYATUL KHASANAH", k: "X - B", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "ASYROF ZAKARIYYA MASUD", k: "X - C", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "LABIB NAIL", k: "X - D", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "AKMAL HAFIDZ", k: "X - E", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "AULIYA KHULATUL JANAH", k: "X - E", e: "Rebana", d: ["S", "H", "-"] },
-  { n: "AHMAD AKBARUNNAJAH", k: "X - F", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "ALTAF HAIDAR FAIZ", k: "X - F", e: "Rebana", d: ["S", "H", "-"] },
-  { n: "MUHAMMAD SYARIFUDIN", k: "X - F", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "MUHAMMAD ATHOUL FAHMI", k: "X - G", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "NANDA SULTON ILMALANA", k: "X - G", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "YUDISTIRA PERMANA", k: "X - G", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "IBNU FAWAID", k: "X - H", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "ALIEF NURMAN SYAH", k: "X - I", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "HAFIZ HAMDAN ALFASIN", k: "X - I", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "MUHAMMAD AFLAH IHDA AS SIDQI", k: "X - I", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "AFRILIA MAFTUHATUN NISA", k: "X - J", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "FARRAS DAFA ALAM", k: "X - J", e: "Rebana", d: ["S", "H", "-"] },
-  { n: "JAFETH AHMAD NUR HAKIM", k: "X - K", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "LUMINTANG PRAMUDYA ASNA PUTRA", k: "X - K", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "ELREISHA DIAH MUHARRA", k: "XI - A", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "KAFFA NUR MAZIDAH", k: "XI - A", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "RAHAYU FASOHAH", k: "XI - A", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "RASHIFATUL CHUSNA", k: "XI - A", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "TSALTSA INDANANISA TAUFIKURRAHMADANI", k: "XI - A", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "ADINDA RAISYA AN NAHWA", k: "XI - B", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "AISYAH KHUROTUL JANNAH", k: "XI - B", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "LUHUR GINANJAR PRAYOGA", k: "XI - C", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "MUHAMMAD MUTAWAKKIL ALALLAH ZAINAL", k: "XI - D", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "REFA QOLBINA ZAHIDA", k: "XI - D", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "SHOIB KHAFIDZIN", k: "XI - D", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "AUFA ZAIDAN BAKHTIAR", k: "XI - E", e: "Rebana", d: ["I", "H", "-"] },
-  { n: "GALIH DWI PRASETIYO", k: "XI - F", e: "Rebana", d: ["S", "H", "-"] },
-  { n: "MUHAMMAD RAFLI ZULMI ALFIAN", k: "XI - F", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "MUNIF ZUHRI R", k: "XI - F", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "TEGUH IMAM MULYA", k: "XI - F", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "ADEBA ALFA FAJARINA", k: "XI - G", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "FAIQ FAIRUZSANI NORIZ", k: "XI - G", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "DINA OLIVIA", k: "XI - H", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "HAMZAH SHOHIBUL WAFA", k: "XI - H", e: "Rebana", d: ["S", "H", "-"] },
-  { n: "NURUL HASNA", k: "XI - H", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "NAZAL FAIQOH WIJIATMOKO", k: "XI - I", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "TAZKIYATUNNAFS AZKA AZALIA", k: "XI - I", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "AULIA RAHMI", k: "XI - L", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "DZAKI AFIF ZAIN", k: "XI - L", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "FAYKHA YUMNA ALIFIA", k: "XI - L", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "FITA FAUZIYAH", k: "XI - L", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "GHAIDA FAHMI IZZATUNNISA", k: "XI - L", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "HILYA RUSYDA", k: "XI - L", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "MUKHAMMAD HAIKAL", k: "XI - L", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "NADIYA MARYAM WENNO", k: "XI - L", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "NAJWA AULIYA WAFDA", k: "XI - L", e: "Rebana", d: ["H", "H", "-"] },
-  { n: "THALITA KHANZA KHUMAIRA", k: "X - A", e: "Sablon", d: ["A", "I", "A"] },
-  { n: "BAQIATUS SOLIKHAH", k: "X - D", e: "Sablon", d: ["A", "A", "H"] },
-  { n: "PUTRI LISTIANI", k: "X - G", e: "Sablon", d: ["A", "A", "H"] },
-  { n: "ANA ALTHAFUNNISA", k: "X - I", e: "Sablon", d: ["A", "A", "A"] },
-  { n: "GHINA AULIA RAHMA", k: "X - I", e: "Sablon", d: ["A", "A", "A"] },
-  { n: "INTAN NUR AINI", k: "XI - B", e: "Sablon", d: ["A", "H", "I"] },
-  { n: "NAYLA SABRINA", k: "XI - B", e: "Sablon", d: ["A", "H", "I"] },
-  { n: "AFRIZAL KHOIRUL R", k: "XI - F", e: "Sablon", d: ["A", "A", "A"] },
-  { n: "AIDATUN NAFILAH", k: "XI - F", e: "Sablon", d: ["A", "H", "H"] },
-  { n: "AHMAD NUR RIZQI", k: "XI - I", e: "Sablon", d: ["H", "H", "I"] },
-  { n: "ALIFIAN FAJRA", k: "XI - I", e: "Sablon", d: ["A", "A", "H"] },
-  { n: "M ZAKI ASWAN", k: "XI - I", e: "Sablon", d: ["A", "H", "H"] },
-  { n: "NUR FAHRI H", k: "XI - I", e: "Sablon", d: ["H", "H", "H"] },
-  { n: "ADELA LINTANG SAROYA", k: "XI - J", e: "Sablon", d: ["A", "H", "I"] },
-  { n: "ADZIN EVAN B", k: "XI - J", e: "Sablon", d: ["A", "A", "A"] },
-  { n: "ANNAYA PUTRI ARIFIN", k: "XI - J", e: "Sablon", d: ["A", "H", "H"] },
-  { n: "HILMI ABDILAH", k: "XI - J", e: "Sablon", d: ["A", "H", "I"] },
-  { n: "M ARZU SABIQ", k: "XI - J", e: "Sablon", d: ["A", "A", "A"] },
-  { n: "M HILZINIM KAFABIH", k: "XI - J", e: "Sablon", d: ["A", "A", "A"] },
-  { n: "ALENA ANINDYA KESYARA", k: "X - C", e: "Seni Musik", d: ["I", "H", "-"] },
-  { n: "RAFIQ DZAKI MUNANDAR", k: "X - E", e: "Seni Musik", d: ["H", "H", "-"] },
-  { n: "MAULANA ARIF PRATAMA", k: "X - H", e: "Seni Musik", d: ["H", "H", "-"] },
-  { n: "MUHAMAD TRI HAMDANI", k: "X - H", e: "Seni Musik", d: ["I", "H", "-"] },
-  { n: "YASMIN AUDI DEBYANI", k: "X - I", e: "Seni Musik", d: ["I", "H", "-"] },
-  { n: "Hafidzotunisa Aulia Ahmad", k: "X - K", e: "Seni Musik", d: ["I", "H", "-"] },
-  { n: "ALUNA FAUZIAH RAHMAH", k: "XI - B", e: "Seni Musik", d: ["S", "H", "-"] },
-  { n: "RISANG NOVIAN SAMUDRA", k: "XI - K", e: "Seni Musik", d: ["H", "S", "-"] },
-  { n: "WILONA HIKMATUN NAYLA", k: "XI - K", e: "Seni Musik", d: ["A", "I", "-"] },
-  { n: "ANIQOTUL ATIYYA", k: "XI - L", e: "Seni Musik", d: ["H", "H", "-"] },
-  { n: "ASIQAH NAYLA ZULVA", k: "X - A", e: "Tari", d: ["H", "H", "A"] },
-  { n: "KASYAFA SIFARA VILAH", k: "X - B", e: "Tari", d: ["A", "H", "H"] },
-  { n: "MAZIYA AKMALIYA ULFA", k: "X - B", e: "Tari", d: ["A", "H", "H"] },
-  { n: "NADIA FARHANA", k: "X - B", e: "Tari", d: ["A", "A", "A"] },
-  { n: "FITRIANA TRI HAPSARI", k: "X - C", e: "Tari", d: ["H", "H", "H"] },
-  { n: "ANANDA NASYWA AULIA", k: "X - D", e: "Tari", d: ["H", "H", "S"] },
-  { n: "HALLIN TSANIA ZAHRA", k: "X - D", e: "Tari", d: ["H", "A", "H"] },
-  { n: "DWI APRILIANI SHOLEHAH", k: "X - E", e: "Tari", d: ["H", "H", "H"] },
-  { n: "VANIA ALMAYRA DANASTRI", k: "X - E", e: "Tari", d: ["H", "H", "H"] },
-  { n: "AS SYIFA ARWA MAULIDYA", k: "X - F", e: "Tari", d: ["A", "A", "H"] },
-  { n: "ASLA MAULIDA ROMADHONI", k: "X - G", e: "Tari", d: ["H", "A", "H"] },
-  { n: "RISKA KUMAIRA", k: "X - G", e: "Tari", d: ["H", "H", "I"] },
-  { n: "WILINDA ARUM RAHMANITA", k: "X - G", e: "Tari", d: ["A", "A", "A"] },
-  { n: "Agatha Lulu Zhahiro", k: "X - H", e: "Tari", d: ["-", "H", "H"] },
-  { n: "GHAITSAA NAFFAZILLA", k: "X - H", e: "Tari", d: ["H", "H", "A"] },
-  { n: "INDANA IFTITAKHUL KHUSNA", k: "X - H", e: "Tari", d: ["H", "H", "H"] },
-  { n: "M ABI TORIK", k: "X - H", e: "Tari", d: ["I", "A", "A"] },
-  { n: "NADZIFA ZIYYA ALMAHIRA", k: "X - H", e: "Tari", d: ["A", "A", "A"] },
-  { n: "RISTA ROIHATUL KHASMA", k: "X - H", e: "Tari", d: ["H", "H", "H"] },
-  { n: "AURELYA JAYIDATUL LABIBAH", k: "X - I", e: "Tari", d: ["H", "A", "S"] },
-  { n: "HIDAYATU SIFANI", k: "X - I", e: "Tari", d: ["H", "H", "H"] },
-  { n: "KAISA AULIYA ZAHRA", k: "X - I", e: "Tari", d: ["H", "H", "I"] },
-  { n: "SYIFA SALSABILA NADHIFAH", k: "X - I", e: "Tari", d: ["H", "H", "H"] },
-  { n: "ANNISA MILLATUL AZKIYA", k: "X - J", e: "Tari", d: ["H", "A", "I"] },
-  { n: "NIKITA ANURU", k: "X - J", e: "Tari", d: ["H", "A", "H"] },
-  { n: "NAELA TAMAMIL ASNA", k: "X - K", e: "Tari", d: ["H", "H", "H"] },
-  { n: "NAJWA HANIATUSSYIFA", k: "X - K", e: "Tari", d: ["H", "H", "H"] },
-  { n: "RIFQI SILVIIANA PUTRI", k: "X - K", e: "Tari", d: ["A", "H", "A"] },
-  { n: "MEILIANA BAHAR", k: "XI - A", e: "Tari", d: ["A", "H", "H"] },
-  { n: "QISMIKA AULIA ABDILLAH", k: "XI - A", e: "Tari", d: ["H", "H", "H"] },
-  { n: "TRISA ADINDA PUTRI S", k: "XI - A", e: "Tari", d: ["H", "H", "H"] },
-  { n: "PUTRI MARVA LAELIKA", k: "XI - B", e: "Tari", d: ["A", "A", "H"] },
-  { n: "CHILYA ISTI FADATIL AFLAH", k: "XI - D", e: "Tari", d: ["H", "I", "H"] },
-  { n: "Farikha almaqfira ramadhani", k: "XI - D", e: "Tari", d: ["-", "H", "H"] },
-  { n: "SYAHIDAH ULYA AMANINA", k: "XI - D", e: "Tari", d: ["H", "H", "I"] },
-  { n: "AINI AZZAHRA", k: "XI - E", e: "Tari", d: ["A", "H", "H"] },
-  { n: "AZHAR NASYWA ALMAITSA", k: "XI - G", e: "Tari", d: ["A", "H", "H"] },
-  { n: "NENG ALMAS DIYA ULHAQ", k: "XI - G", e: "Tari", d: ["H", "H", "I"] },
-  { n: "ANIK RAHMAWATI", k: "XI - H", e: "Tari", d: ["H", "H", "H"] },
-  { n: "NAILA KHILYATUL KARIMAH", k: "XI - H", e: "Tari", d: ["H", "H", "H"] },
-  { n: "RISMA WARDATUL MUTOHAROH", k: "XI - H", e: "Tari", d: ["I", "I", "I"] },
-  { n: "NAFIS ZAINANNISA AK-KHUSNA", k: "XI - J", e: "Tari", d: ["A", "H", "H"] },
-  { n: "HIKMATUL ILLAHIYAH", k: "XI - L", e: "Tari", d: ["H", "H", "I"] },
-  { n: "MUHAMMAD IMADUL HUSNI", k: "X - B", e: "Tenis Meja", d: ["H", "H", "H"] },
-  { n: "SYAFIRA NUR HIDAYAH", k: "XI - A", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "ALIKA SULA ALBERTINA FELITA", k: "XI - D", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "AUFIA SABILA RAHMA", k: "XI - D", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "FELISHA MUTIA ZAHRA", k: "XI - D", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "ALIF ARDANSYAH", k: "XI - E", e: "Tenis Meja", d: ["A", "A", "H"] },
-  { n: "BAGUS SETYAWAN", k: "XI - E", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "CAHAYA FUADATUL HUSNA", k: "XI - E", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "IBRAHIM ZAIDAN NAUVAL", k: "XI - E", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "LINTANG AKBAR IBRAHIM", k: "XI - E", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "M.SYUFA YUDHA", k: "XI - E", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "IFA DHATUL MUAFIDAH", k: "XI - F", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "HASNA MASFUFAH", k: "XI - G", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "MANDALA NKK VARONISTI", k: "XI - G", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "A.IK IZATU TAZKIYATUNNAFS", k: "XI - H", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "FIRNANDA VIRA KUSUMA", k: "XI - H", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "FAJAR DZAKWAN", k: "XI - I", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "ITSNA MARATUS SHOLIHAH", k: "XI - L", e: "Tenis Meja", d: ["A", "A", "A"] },
-  { n: "M ALI MAHFUZI", k: "XI - L", e: "Tenis Meja", d: ["H", "H", "H"] },
-  { n: "M.DAFFA AZKA JAUNA", k: "XI - L", e: "Tenis Meja", d: ["A", "H", "A"] },
-  { n: "ZAZKYA DWI MAHARANI", k: "X - A", e: "Theater", d: ["-", "H", "H"] },
-  { n: "FAYYADH MUHAMMAD ADANI", k: "X - B", e: "Theater", d: ["-", "S", "H"] },
-  { n: "NUR ALIFAH", k: "X - B", e: "Theater", d: ["-", "H", "H"] },
-  { n: "OLIVIA RIFKA NUR AZIZAH", k: "X - B", e: "Theater", d: ["-", "I", "H"] },
-  { n: "DANAYA FITRIANA", k: "X - C", e: "Theater", d: ["-", "I", "H"] },
-  { n: "Ica Alhafidzah", k: "X - E", e: "Theater", d: ["-", "H", "H"] },
-  { n: "AINAYA MUKJIZATUL FATIKHA", k: "X - G", e: "Theater", d: ["-", "H", "H"] },
-  { n: "FIDA SALSABILA RAFIFAH MARUF", k: "X - G", e: "Theater", d: ["-", "H", "H"] },
-  { n: "MUFIDAH KHOIRUN NISSA", k: "X - G", e: "Theater", d: ["-", "H", "H"] },
-  { n: "NAILUL MUNA", k: "X - G", e: "Theater", d: ["-", "H", "H"] },
-  { n: "HUMAIRA RAIHANUN AQILA", k: "X - H", e: "Theater", d: ["-", "H", "H"] },
-  { n: "IKHWAH ZAKIYATUL ADZKIYA", k: "X - H", e: "Theater", d: ["-", "A", "H"] },
-  { n: "ATIKA FADLIATUTS TSANIA", k: "X - I", e: "Theater", d: ["-", "A", "H"] },
-  { n: "MILLA DYA NUR", k: "X - J", e: "Theater", d: ["-", "H", "H"] },
-  { n: "Nawariza Arina Manasikana", k: "X - J", e: "Theater", d: ["-", "H", "H"] },
-  { n: "NAZAL FADEL AR-RAZY", k: "X - J", e: "Theater", d: ["-", "I", "H"] },
-  { n: "Alifia Safa Atuzzahra", k: "X - K", e: "Theater", d: ["-", "H", "H"] },
-  { n: "MUTIA QURROTA AYUN", k: "XI - B", e: "Theater", d: ["A", "H", "H"] },
-  { n: "ULYA SIANA", k: "XI - B", e: "Theater", d: ["-", "H", "H"] },
-  { n: "INDY SAHLAH", k: "XI - C", e: "Theater", d: ["-", "H", "H"] },
-  { n: "SALASA KHUSNA MUNFARIDA", k: "XI - C", e: "Theater", d: ["-", "H", "H"] },
-  { n: "SALMA ALFIATUN NISWA", k: "XI - C", e: "Theater", d: ["-", "H", "H"] },
-  { n: "ZULFA TSAUQY ILA IZZATILLAH", k: "XI - C", e: "Theater", d: ["-", "I", "H"] },
-  { n: "LISA ALFINA KHUSNAWATI", k: "XI - D", e: "Theater", d: ["-", "A", "H"] },
-  { n: "MEZALUNA GHAITSA", k: "XI - D", e: "Theater", d: ["-", "H", "H"] },
-  { n: "NABILA KHOIRUN NISA", k: "XI - D", e: "Theater", d: ["-", "H", "H"] },
-  { n: "UMMA FARWA", k: "XI - D", e: "Theater", d: ["-", "H", "H"] },
-  { n: "AZKIYA NURIL JIHAN", k: "XI - E", e: "Theater", d: ["-", "H", "H"] },
-  { n: "ZAHRA MADINA", k: "XI - E", e: "Theater", d: ["-", "S", "H"] },
-  { n: "DYNAR ALFA FAZA", k: "XI - F", e: "Theater", d: ["-", "A", "H"] },
-  { n: "ILINIA LAYINA KEYSA", k: "XI - F", e: "Theater", d: ["-", "A", "H"] },
-  { n: "SYIFA NAILU SAADAH", k: "XI - F", e: "Theater", d: ["-", "A", "H"] },
-  { n: "LANA AMARATUL IRFANIAH", k: "XI - G", e: "Theater", d: ["-", "H", "H"] },
-  { n: "SAFIRA NOOR MUGHITSAH", k: "XI - J", e: "Theater", d: ["-", "H", "H"] },
-  { n: "AGHNY ILMA KASYIFA", k: "X - E", e: "Thek-Thek", d: ["-", "-", "A"] },
-  { n: "KAMALIA FEBRIANITA", k: "X - E", e: "Thek-Thek", d: ["H", "-", "I"] },
-  { n: "fika ismatul hawa", k: "X - F", e: "Thek-Thek", d: ["-", "-", "A"] },
-  { n: "Najwa Tri Attania", k: "X - F", e: "Thek-Thek", d: ["-", "-", "A"] },
-  { n: "SHOFA AUNA NAJUBA", k: "X - F", e: "Thek-Thek", d: ["H", "-", "H"] },
-  { n: "MARATUN SHOLIHAH", k: "X - G", e: "Thek-Thek", d: ["A", "-", "A"] },
-  { n: "MEILA CINDY NATHANIA", k: "X - G", e: "Thek-Thek", d: ["H", "-", "S"] },
-  { n: "HIDAYATU SIFANA", k: "X - I", e: "Thek-Thek", d: ["H", "-", "H"] },
-  { n: "MEIKA ANDINITA SALSA", k: "X - I", e: "Thek-Thek", d: ["A", "-", "A"] },
-  { n: "BASHIROH AZKA NADIA", k: "X - J", e: "Thek-Thek", d: ["H", "-", "H"] },
-  { n: "GHINA SYARIFAH", k: "X - J", e: "Thek-Thek", d: ["H", "-", "H"] },
-  { n: "WAHDANIYAH", k: "X - J", e: "Thek-Thek", d: ["A", "-", "A"] },
-  { n: "ELLY RAHMA WATI", k: "X - K", e: "Thek-Thek", d: ["H", "-", "-"] },
-  { n: "HASNA FIRDA NAZIFA", k: "XI - A", e: "Thek-Thek", d: ["A", "-", "A"] },
-  { n: "MUHMMAD NUR ALIM", k: "XI - A", e: "Thek-Thek", d: ["S", "-", "H"] },
-  { n: "MARCEHLIA NOVITA SARI", k: "XI - C", e: "Thek-Thek", d: ["A", "-", "H"] },
-  { n: "AUFIA SABILA", k: "XI - D", e: "Thek-Thek", d: ["H", "-", "A"] },
-  { n: "GISKA ANAZAR", k: "XI - D", e: "Thek-Thek", d: ["H", "-", "H"] },
-  { n: "MADRISTA LIVIA MILANISTI", k: "XI - D", e: "Thek-Thek", d: ["A", "-", "H"] },
-  { n: "MAGHFIROTUN KHASANAH", k: "XI - D", e: "Thek-Thek", d: ["A", "-", "H"] },
-  { n: "FIQH CAHYONO", k: "XI - F", e: "Thek-Thek", d: ["S", "-", "A"] },
-  { n: "TEGUH IMAM MULYA", k: "XI - F", e: "Thek-Thek", d: ["H", "-", "H"] },
-  { n: "FITRANIA LAILATUL RACHMADHANI", k: "XI - G", e: "Thek-Thek", d: ["H", "-", "H"] },
-  { n: "GILANG RAMADHAN", k: "XI - K", e: "Thek-Thek", d: ["H", "-", "A"] },
-  { n: "GUFRON DAI SAPUTRA", k: "XI - K", e: "Thek-Thek", d: ["H", "-", "H"] },
-  { n: "HAIDAR IRHAB TUBBA ASSYAHIR", k: "XI - K", e: "Thek-Thek", d: ["S", "-", "H"] }
-];
+(function() {
+    // ---------- DATA LENGKAP (sekitar 700 baris sesuai file asli, dimampatkan) ----------
+    const dataset = [
+        {nama:"QONITA JIHAN FAKHRIYAH",kelas:"X - B",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"H"},
+        {nama:"ARINA NAMAIKA",kelas:"X - C",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"H"},
+        {nama:"FAJAR DWI CAHYANI",kelas:"X - C",ekstra:"Bahasa Arab",t1:"-",t2:"S",t3:"H"},
+        {nama:"KANZARROJAA",kelas:"X - C",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"A"},
+        {nama:"FILZATUL AFIQOH",kelas:"X - D",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"A"},
+        {nama:"SAFINA NISA AZKIA",kelas:"X - D",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"A"},
+        {nama:"FALIHA AZIRA FILLAH",kelas:"X - E",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"H"},
+        {nama:"SHOFA NURCHAFIDHOH IZZUL MAARIF",kelas:"X - E",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"A"},
+        {nama:"ALMIRA ZAYAN NAFIAH",kelas:"X - F",ekstra:"Bahasa Arab",t1:"-",t2:"I",t3:"H"},
+        {nama:"AULIA ROHMAH",kelas:"X - F",ekstra:"Bahasa Arab",t1:"-",t2:"I",t3:"H"},
+        {nama:"TSALISA HANNA IMANIA",kelas:"X - F",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"H"},
+        {nama:"ALMASSHELVY A-ISYARACHIM",kelas:"X - H",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"A"},
+        {nama:"RISKA RAHMAWATI",kelas:"X - J",ekstra:"Bahasa Arab",t1:"-",t2:"I",t3:"H"},
+        {nama:"RIRIN NOPIYA LESTARI",kelas:"XI - H",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"H"},
+        {nama:"TAZKIA MUNA",kelas:"XI - I",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"H"},
+        {nama:"FINA HILMIYA KHAIRUNNISA",kelas:"XI - J",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"H"},
+        {nama:"KHAURA ATTHAYA KHANSA",kelas:"XI - L",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"H"},
+        {nama:"ZUWAIDATUL HUSNA",kelas:"XI - L",ekstra:"Bahasa Arab",t1:"-",t2:"H",t3:"I"},
+        {nama:"MILA ANGGUN RIZQIANA",kelas:"X - B",ekstra:"Bahasa Inggris",t1:"I",t2:"H",t3:"-"},
+        {nama:"NISRINA ZAHI NADA",kelas:"X - B",ekstra:"Bahasa Inggris",t1:"A",t2:"H",t3:"-"},
+        {nama:"NAFISATUL KHIFDZIYAH",kelas:"X - D",ekstra:"Bahasa Inggris",t1:"H",t2:"H",t3:"-"},
+        {nama:"NAFISA THALITA AGUSTIN",kelas:"X - E",ekstra:"Bahasa Inggris",t1:"A",t2:"H",t3:"-"},
+        {nama:"ZIANA AMELIA PUTRI",kelas:"X - H",ekstra:"Bahasa Inggris",t1:"A",t2:"I",t3:"-"},
+        {nama:"AGHNIA RAISA NAZAFARIN",kelas:"XI - A",ekstra:"Bahasa Inggris",t1:"I",t2:"H",t3:"-"},
+        {nama:"SAFAATUL IKHSANAT",kelas:"XI - A",ekstra:"Bahasa Inggris",t1:"I",t2:"H",t3:"-"},
+        {nama:"AURYN ZABRINA AZZAHRA",kelas:"XI - B",ekstra:"Bahasa Inggris",t1:"A",t2:"H",t3:"-"},
+        {nama:"BELA KHARISMA RAHMA DEWIANI",kelas:"XI - B",ekstra:"Bahasa Inggris",t1:"A",t2:"I",t3:"-"},
+        {nama:"DHAIFA ALYA HIDAYAH",kelas:"XI - B",ekstra:"Bahasa Inggris",t1:"A",t2:"I",t3:"-"},
+        {nama:"NOFAYLA AYU NANDIRA",kelas:"XI - B",ekstra:"Bahasa Inggris",t1:"A",t2:"H",t3:"-"},
+        {nama:"RISMA WULAN DARI",kelas:"XI - B",ekstra:"Bahasa Inggris",t1:"H",t2:"H",t3:"-"},
+        {nama:"LANGIT RAMADHANI SUTRISNO PUTRI",kelas:"XI - C",ekstra:"Bahasa Inggris",t1:"H",t2:"H",t3:"-"},
+        {nama:"ANEIRA ARKANEISYA KARIM",kelas:"XI - D",ekstra:"Bahasa Inggris",t1:"A",t2:"H",t3:"-"},
+        {nama:"REVA KHAFIDZATUL RIZQI",kelas:"XI - D",ekstra:"Bahasa Inggris",t1:"A",t2:"H",t3:"-"},
+        {nama:"YUHROTUN AIDA",kelas:"XI - D",ekstra:"Bahasa Inggris",t1:"I",t2:"H",t3:"-"},
+        {nama:"FINA HIMATUL ULYA",kelas:"XI - E",ekstra:"Bahasa Inggris",t1:"I",t2:"H",t3:"-"},
+        {nama:"SAKINAH KHOIRUN NISA",kelas:"XI - J",ekstra:"Bahasa Inggris",t1:"A",t2:"H",t3:"-"},
+        {nama:"AHSANU NADIYYA",kelas:"XI - K",ekstra:"Bahasa Inggris",t1:"H",t2:"H",t3:"-"},
+        {nama:"ZARQA SYAFIEQ WARDAH AL MUNA",kelas:"XI - K",ekstra:"Bahasa Inggris",t1:"A",t2:"H",t3:"-"},
+        {nama:"DEALISSYA OKTAFIA",kelas:"XI - L",ekstra:"Bahasa Inggris",t1:"A",t2:"H",t3:"-"},
+        {nama:"NASYADA AZMI MEYSSIANA",kelas:"XI - L",ekstra:"Bahasa Inggris",t1:"A",t2:"H",t3:"-"},
+        {nama:"RAIHANA YASMINA FAIHA",kelas:"X - A",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"A"},
+        {nama:"SUCI RIZQIANA RIKFI",kelas:"X - A",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"MAULYDA BALQUES",kelas:"X - D",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"LINGGAR FAJRI CALLIESTASWARI",kelas:"X - E",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"FIDA SALSABILA RAFIFAH MARUF",kelas:"X - G",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUFIDAH KHOIRUN NISSA",kelas:"X - G",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"NUHA ALFIYAH",kelas:"X - G",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"IKHWAH ZAKIYATUL ADZKIYA",kelas:"X - H",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"MAY ADIBA RAHMA",kelas:"X - H",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"ATIKA FADLIATUTS TSANIA",kelas:"X - I",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"ILMA CHOLISATUL LUTFIANA",kelas:"X - I",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"AHMAD MUHAFID",kelas:"XI - A",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"MAULIDA MUSAROH",kelas:"XI - E",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"DHIA ANIS SAUQI",kelas:"XI - I",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUHAMMAD KHOIRIAN SUGITO",kelas:"XI - I",ekstra:"Bahasa Jawa",t1:"H",t2:"H",t3:"H"},
+        {nama:"ELLIZA AMELIA PUTRI",kelas:"XI - K",ekstra:"Bahasa Jawa",t1:"A",t2:"H",t3:"A"},
+        {nama:"ATALAH ADHARU",kelas:"X - C",ekstra:"Basket",t1:"H",t2:"H",t3:"H"},
+        {nama:"DEAN AZMI HARIS ALBANNA",kelas:"X - E",ekstra:"Basket",t1:"H",t2:"H",t3:"A"},
+        {nama:"DEA ANANDA PUTRI",kelas:"X - F",ekstra:"Basket",t1:"A",t2:"H",t3:"A"},
+        {nama:"FAKHRI ROJA",kelas:"X - F",ekstra:"Basket",t1:"H",t2:"H",t3:"H"},
+        {nama:"JULIAN UMAR PASHA",kelas:"X - F",ekstra:"Basket",t1:"A",t2:"A",t3:"A"},
+        {nama:"ALLIERA SASI KIRANA",kelas:"X - G",ekstra:"Basket",t1:"A",t2:"H",t3:"H"},
+        {nama:"ALIYA MILA SIFA",kelas:"X - I",ekstra:"Basket",t1:"A",t2:"H",t3:"A"},
+        {nama:"AFFAN TAMAMA",kelas:"X - J",ekstra:"Basket",t1:"-",t2:"H",t3:"H"},
+        {nama:"HADYAN MURSYIDAN ASSEGHAF",kelas:"XI - C",ekstra:"Basket",t1:"H",t2:"H",t3:"A"},
+        {nama:"IVA MIFTAKHUL ULUM",kelas:"XI - C",ekstra:"Basket",t1:"A",t2:"A",t3:"A"},
+        {nama:"SAD SILVIANI AMANAH",kelas:"XI - C",ekstra:"Basket",t1:"A",t2:"A",t3:"A"},
+        {nama:"KHANSA CANTIKA AL-LATIFAH",kelas:"XI - E",ekstra:"Basket",t1:"A",t2:"A",t3:"H"},
+        {nama:"REHAN YUDHA PRATAMA",kelas:"XI - E",ekstra:"Basket",t1:"H",t2:"H",t3:"H"},
+        {nama:"M RISKON FINJI",kelas:"XI - F",ekstra:"Basket",t1:"A",t2:"A",t3:"A"},
+        {nama:"FADHILAH LAILA SAFITRI",kelas:"XI - H",ekstra:"Basket",t1:"A",t2:"A",t3:"H"},
+        {nama:"KAYLLA MUTIARA CINTA SUCI",kelas:"XI - H",ekstra:"Basket",t1:"A",t2:"A",t3:"H"},
+        {nama:"QHOIRUN NISA APRILLIA AYU WULANDARI",kelas:"XI - J",ekstra:"Basket",t1:"A",t2:"S",t3:"S"},
+        {nama:"ARINA NILNA MUNA",kelas:"XI - L",ekstra:"Basket",t1:"A",t2:"A",t3:"A"},
+        {nama:"BEBYOLA ASTA JUARA",kelas:"XI - L",ekstra:"Basket",t1:"A",t2:"A",t3:"H"},
+        {nama:"ZIDNY AL HAYAN",kelas:"X - A",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"NADIA FARHANA",kelas:"X - B",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"ZAQI NUR HALIM",kelas:"X - D",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"KHOTRUN NIDA MUNAWAROH",kelas:"X - E",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"MEISI NUR ISNAENI",kelas:"X - E",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"SYARIEF ALI PANDHEGA",kelas:"X - E",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"S"},
+        {nama:"HIDAYAT NURROHMAN",kelas:"X - F",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"RHENO FIRDAUS",kelas:"X - F",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUFIDATUN KHASANAH",kelas:"X - G",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"YASMIN GHALIYAH",kelas:"X - G",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"DANU PRATHAMA",kelas:"X - H",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"ADENA ATHARIQ ILMI",kelas:"X - I",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"AFIF SHOFI MUBAROK",kelas:"X - I",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"KHUSAIN DIYAK UDIN",kelas:"X - I",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUHAMMAD KHOIRUL AKBAR",kelas:"X - J",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"VELLITA",kelas:"X - J",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"WAHYU ATIKA",kelas:"X - J",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"WILDANUL AZKA YUSUF",kelas:"X - J",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"ELHASSYA PUTRI LESTARI",kelas:"X - K",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"SHERIN MAY HALIZA",kelas:"X - K",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"SOFIYATUL MUSTAFIDAH",kelas:"X - K",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"KHULWAH GHIFARUL MANNA",kelas:"XI - A",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"RIANA NUR LATIFAH",kelas:"XI - A",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"RISMA WULAN DARI",kelas:"XI - B",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"ULFA SHARIFATUL AZIZAH",kelas:"XI - B",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"MUHAMMAD RAFID ALMUJALID",kelas:"XI - C",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"ACHMAD MANAHILUL IRFAN",kelas:"XI - E",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"HALILINTAR PUTRA AKHMAD",kelas:"XI - E",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"M.FATIKHUR RIZKI",kelas:"XI - E",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUFTI ABRORI",kelas:"XI - F",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUHAMMAD SALMAN AL FARIZI",kelas:"XI - F",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"RISMA ISNAINI SHOLEHAH",kelas:"XI - F",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"DINA SAADATUL MUFIDA",kelas:"XI - G",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"ZULFA DIATAMA",kelas:"XI - G",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"AMALIA NUR FARIFA",kelas:"XI - H",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"AFAF AL KAFAH",kelas:"XI - I",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"AHMAD IBNU MAHFUDZ",kelas:"XI - I",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"MAZAYA AYU",kelas:"XI - I",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"SINTA RAHAYU",kelas:"XI - I",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"ZAHROTUN NAFINGAH",kelas:"XI - I",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"DWI SAFITRI",kelas:"XI - K",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"JARON PUTRA ADITYA",kelas:"XI - K",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"ARJUNA MICHAEL MATIEN",kelas:"XI - L",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"A"},
+        {nama:"M ALI MAHFUZI",kelas:"XI - L",ekstra:"Bola Voli",t1:"H",t2:"H",t3:"H"},
+        {nama:"DAMAR SUTOMO",kelas:"X - A",ekstra:"Bulutangkis",t1:"I",t2:"A",t3:"A"},
+        {nama:"MUHAMMAD NURIL CHADZIEQ",kelas:"X - A",ekstra:"Bulutangkis",t1:"H",t2:"H",t3:"A"},
+        {nama:"AFAF SAYIDIL AKWAN",kelas:"X - B",ekstra:"Bulutangkis",t1:"H",t2:"H",t3:"H"},
+        {nama:"ELSA ZUHROTUN NAJWA",kelas:"X - B",ekstra:"Bulutangkis",t1:"H",t2:"H",t3:"H"},
+        {nama:"FATHAN SABIL RIZQULLOH",kelas:"X - B",ekstra:"Bulutangkis",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUHAMMAD ZIDNA HILMAN WAHID",kelas:"X - B",ekstra:"Bulutangkis",t1:"H",t2:"H",t3:"H"},
+        {nama:"DITA DWI APRILIA",kelas:"X - D",ekstra:"Bulutangkis",t1:"H",t2:"A",t3:"H"},
+        {nama:"GILANG LUTHFI ARDI",kelas:"X - E",ekstra:"Bulutangkis",t1:"H",t2:"H",t3:"H"},
+        {nama:"ADIFTA RISKY PRATAMA",kelas:"X - I",ekstra:"Bulutangkis",t1:"I",t2:"I",t3:"H"},
+        {nama:"HANAN MANSHUR",kelas:"X - I",ekstra:"Bulutangkis",t1:"A",t2:"A",t3:"H"},
+        {nama:"SALSABILA RAHADATUL AISY",kelas:"X - J",ekstra:"Bulutangkis",t1:"H",t2:"H",t3:"H"},
+        {nama:"LENI NAYLATUS SILNMI",kelas:"X - K",ekstra:"Bulutangkis",t1:"A",t2:"A",t3:"S"},
+        {nama:"NURITA AKHSANULKHUSNA",kelas:"XI - A",ekstra:"Bulutangkis",t1:"H",t2:"H",t3:"I"},
+        {nama:"FEBRIANA WAHDINY HIDAYAH",kelas:"XI - C",ekstra:"Bulutangkis",t1:"I",t2:"H",t3:"H"},
+        {nama:"RAHMA DHANY",kelas:"XI - C",ekstra:"Bulutangkis",t1:"H",t2:"H",t3:"I"},
+        {nama:"FAYASA LAELA LUSIFA",kelas:"XI - E",ekstra:"Bulutangkis",t1:"I",t2:"A",t3:"A"},
+        {nama:"MOH.ALIFULLAH GHOZYL HAQQY",kelas:"XI - I",ekstra:"Bulutangkis",t1:"A",t2:"A",t3:"A"},
+        {nama:"SITI AISYAH",kelas:"XI - I",ekstra:"Bulutangkis",t1:"A",t2:"A",t3:"A"},
+        {nama:"FAIRUS SYIFA QURATUAIN",kelas:"XI - K",ekstra:"Bulutangkis",t1:"A",t2:"H",t3:"H"},
+        {nama:"MAZAH KHODIJATUL AFIFAH",kelas:"XI - L",ekstra:"Bulutangkis",t1:"A",t2:"A",t3:"A"},
+        {nama:"AHMAD MIQDAD IRTIZA ZEN",kelas:"X - B",ekstra:"Cinematografi",t1:"H",t2:"I",t3:"H"},
+        {nama:"ALMIRA RIZKIANA YASYFA",kelas:"X - B",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"H"},
+        {nama:"ALISSA FARAH QOTRUNNADA",kelas:"X - C",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"H"},
+        {nama:"NADIA IZA NOVIANA",kelas:"X - C",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"ZAZKIATUL FIKRIAH",kelas:"X - C",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"ARINA AHSANA NADYA",kelas:"X - D",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"HIMATUL ALIYAH",kelas:"X - D",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"AISHA RIDA SAKHI",kelas:"X - E",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"H"},
+        {nama:"LATIFATUNNISA ASYHARI",kelas:"X - E",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"MUHAMMAD SOFIL FIKRI",kelas:"X - E",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"SATRIA ADI FIRMANSYAH",kelas:"X - E",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"H"},
+        {nama:"ANNIDA LAELATUS SYIFA",kelas:"X - G",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"MUFIDATUN KHASANAH",kelas:"X - G",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"WAFIQ FAHIRA ZAIN",kelas:"X - G",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"H"},
+        {nama:"RIALATUNNIMAH WAFIQ ZUFAIZAH",kelas:"X - K",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"ULFA IKMANIA",kelas:"X - K",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"H"},
+        {nama:"NAILA NAJWA",kelas:"XI - B",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"H"},
+        {nama:"INTAN NUR AINI",kelas:"XI - C",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"LISA ALFINA KHUSNAWATI",kelas:"XI - D",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"AZZAH SYADZA NAHDA",kelas:"XI - E",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"SYIFA NAILU SAADAH",kelas:"XI - F",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"FIEN SAADATUN NAYLA",kelas:"XI - G",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"H"},
+        {nama:"KEYSHA NAZWA WAHYU NINGTYAS",kelas:"XI - G",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"SAFIRA MAULINA SILMI",kelas:"XI - G",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"MALHALUNA SYAQUILA",kelas:"XI - H",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"H"},
+        {nama:"ALDILA AIRIN AENI",kelas:"XI - J",ekstra:"Cinematografi",t1:"H",t2:"A",t3:"A"},
+        {nama:"DIAZ ZAHWA MAULIDA",kelas:"XI - K",ekstra:"Cinematografi",t1:"H",t2:"A",t3:"A"},
+        {nama:"TAZKIA HUMAIRA KAENI PUTRI",kelas:"XI - K",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"A"},
+        {nama:"SIREN KHAFIFAH ARAHMAN",kelas:"XI - L",ekstra:"Cinematografi",t1:"H",t2:"H",t3:"H"},
+        {nama:"ARFAN ZIDNI ASSADID",kelas:"X - A",ekstra:"Desain Grafis",t1:"H",t2:"-",t3:"H"},
+        {nama:"FIKI FARIKHATI",kelas:"X - A",ekstra:"Desain Grafis",t1:"H",t2:"-",t3:"H"},
+        {nama:"FASICHA AQLA NAFAH",kelas:"X - C",ekstra:"Desain Grafis",t1:"A",t2:"-",t3:"H"},
+        {nama:"VANIA SILVIA RAMADHANI",kelas:"X - F",ekstra:"Desain Grafis",t1:"A",t2:"-",t3:"A"},
+        {nama:"AISY SHOFIYYUL AINI",kelas:"X - K",ekstra:"Desain Grafis",t1:"A",t2:"-",t3:"H"},
+        {nama:"BAGUS MUHAMMAD AL-FAQIH",kelas:"XI - E",ekstra:"Desain Grafis",t1:"I",t2:"-",t3:"H"},
+        {nama:"ITSNA MARATUS SHOLIHAH",kelas:"XI - L",ekstra:"Desain Grafis",t1:"A",t2:"-",t3:"A"},
+        {nama:"M SAIQ MARUF",kelas:"X - A",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"RIFQOH AULIYAH",kelas:"X - A",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"MAZIYA AKMALIYA ULFA",kelas:"X - B",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"CHANINA NAURIN NAJA",kelas:"X - D",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"FAHRUR RIZIQ KIROM",kelas:"X - D",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"FAKHRY ADAM QUSHAY",kelas:"X - D",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"ASHFANAYA RISHFA ANNURIYA",kelas:"X - E",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"MUYA SIVATUL LATHIFA",kelas:"X - E",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"TSANIA MARWA",kelas:"X - E",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"KAFKA ALIZA",kelas:"X - F",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"ADILA DEVI FARIZKY",kelas:"X - G",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"MEIKA ANDINITA SALSA",kelas:"X - I",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"WANDA WILDA UMMI ZAKIYAH",kelas:"X - I",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"ASYIFA DEVI FARIZKA",kelas:"X - J",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"ATINA ULINNUHA KHOLIDA ASYKAR",kelas:"X - J",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"DIANA APRILIA UTAMI",kelas:"X - J",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"HANA GHAIS ANJAUZA",kelas:"X - J",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"HANI ANISSYAFIAH",kelas:"X - J",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"MUHAMMAD AL MUSHHAF",kelas:"X - J",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"MUHAMMAD ZAINAL ARIFIN",kelas:"X - J",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"KHALILA TALITA ZAHRAN",kelas:"X - K",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"NAJMA ZENI OKTAVIONA",kelas:"X - K",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"ZAHRUL AL FAHIDIN",kelas:"X - K",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"LUBNA AYUMNA",kelas:"XI - C",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"MUHAMMAD FAIZ SETIAWAN",kelas:"XI - C",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"FAIQOH FEBRIANA",kelas:"XI - E",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"MAGHFIROTUR ROHMAH",kelas:"XI - G",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"NAESYA AYU MUFIDA",kelas:"XI - G",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"ROJWANA FARAKHIYA S",kelas:"XI - G",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"KAFIYA AININ NADA",kelas:"XI - H",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"KHAIRUNNISA NANDA KIRANA",kelas:"XI - H",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"MUHAMMAD FARUQ HAQIQI",kelas:"XI - H",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"NIMATUSSAFINAH",kelas:"XI - H",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"DEWI NUR LAILI",kelas:"XI - I",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"DHEA SANDY AULIA",kelas:"XI - J",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"AMARA BILQISTH SHOLATIN",kelas:"XI - K",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"KHARISMA YOGI NOVIANA",kelas:"XI - K",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"ZAHRA MUTHIA KHANZA",kelas:"XI - K",ekstra:"Fotografi",t1:"H",t2:"-",t3:"-"},
+        {nama:"VINJAZ YASSA AMANDANGI",kelas:"X - A",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"BINTANG FATKHAN AFADHIL",kelas:"X - B",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"FASHA RIANG ADITYA",kelas:"X - C",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"TEGAR TRI PAMBUDI",kelas:"X - C",ekstra:"Futsal",t1:"A",t2:"A",t3:"A"},
+        {nama:"PUTRI AATIKA SALWAA",kelas:"X - D",ekstra:"Futsal",t1:"A",t2:"A",t3:"A"},
+        {nama:"MUHAMMAD RIZKA AMIQ",kelas:"X - F",ekstra:"Futsal",t1:"H",t2:"H",t3:"A"},
+        {nama:"ADILA DEVI FARIZKY",kelas:"X - G",ekstra:"Futsal",t1:"A",t2:"A",t3:"A"},
+        {nama:"SITI FATKHURIZQOH",kelas:"X - G",ekstra:"Futsal",t1:"A",t2:"A",t3:"A"},
+        {nama:"AHMAD HILMI RIQULLAH",kelas:"X - H",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"ANANDA PRIA KHARISMA",kelas:"X - H",ekstra:"Futsal",t1:"H",t2:"H",t3:"A"},
+        {nama:"CHORI FARIKHATU NISA",kelas:"X - H",ekstra:"Futsal",t1:"A",t2:"A",t3:"A"},
+        {nama:"MUHAMMAD ALFA RIZKY",kelas:"X - H",ekstra:"Futsal",t1:"-",t2:"H",t3:"H"},
+        {nama:"MUHAMMAD HAIDAR RASYAD",kelas:"X - H",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"ZULFA HALIMATUL AINI",kelas:"X - H",ekstra:"Futsal",t1:"A",t2:"A",t3:"A"},
+        {nama:"KEISYA LISATI RIGIYAN PUTRI ZAFA",kelas:"X - I",ekstra:"Futsal",t1:"A",t2:"A",t3:"A"},
+        {nama:"KUN ANIS KHAFIDZOTUL HASNA",kelas:"X - I",ekstra:"Futsal",t1:"A",t2:"A",t3:"A"},
+        {nama:"M. IHFAD LISANI",kelas:"X - I",ekstra:"Futsal",t1:"A",t2:"H",t3:"H"},
+        {nama:"MUHAMMAD FADLUNNAJAH",kelas:"X - I",ekstra:"Futsal",t1:"A",t2:"H",t3:"A"},
+        {nama:"AHMAD FAOYI",kelas:"X - J",ekstra:"Futsal",t1:"A",t2:"H",t3:"H"},
+        {nama:"RAFHA CHAERUL AZZAM",kelas:"X - J",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"ARIEF KURNIAWAN",kelas:"X - K",ekstra:"Futsal",t1:"H",t2:"H",t3:"A"},
+        {nama:"RIDHO FIRMANSAH",kelas:"X - K",ekstra:"Futsal",t1:"S",t2:"A",t3:"A"},
+        {nama:"RIKA AMALIA SALSABIL",kelas:"X - K",ekstra:"Futsal",t1:"A",t2:"-",t3:"-"},
+        {nama:"AZZIZAN RAKA ABDILLA",kelas:"XI - E",ekstra:"Futsal",t1:"H",t2:"I",t3:"A"},
+        {nama:"GHANI AWALUDIN RABBANI",kelas:"XI - E",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"AKHTAR SYARIATI HIBATULLAH",kelas:"XI - G",ekstra:"Futsal",t1:"A",t2:"H",t3:"H"},
+        {nama:"IBNU AFLAH",kelas:"XI - G",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"AHMAD KAHFI YAMIN",kelas:"XI - I",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"GILANG RAMADHAN",kelas:"XI - I",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"HILMAN BAIHAQI HIDAYAT",kelas:"XI - I",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"M.AFHIF NUR FAHRUL ANAM",kelas:"XI - I",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUHAMAD FATIH",kelas:"XI - I",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUHAMMAD KEVYAN ALMUNAJ",kelas:"XI - J",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"ABDUL KHANIF AL_HAQ",kelas:"XI - K",ekstra:"Futsal",t1:"A",t2:"H",t3:"H"},
+        {nama:"MUHAMAD GILANG RIZQI",kelas:"XI - K",ekstra:"Futsal",t1:"A",t2:"H",t3:"H"},
+        {nama:"MUHAMMAD RODIT ARZAK",kelas:"XI - K",ekstra:"Futsal",t1:"A",t2:"H",t3:"I"},
+        {nama:"ZAIDAN ROFIQ MAHBUB",kelas:"XI - K",ekstra:"Futsal",t1:"A",t2:"A",t3:"H"},
+        {nama:"M. DWI IMAM FARHAN",kelas:"XI - L",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"YUSUF MUIZZUL FARHANY",kelas:"XI - L",ekstra:"Futsal",t1:"H",t2:"H",t3:"H"},
+        {nama:"DINI FATMA AZZAHRA",kelas:"X - D",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"GALISHA SALSA BILKHUSNA",kelas:"X - D",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"NUR ALIYAH NABILAH",kelas:"X - D",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"QUINSHA AISWARA MAHDDINAR",kelas:"X - D",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"OKTAVIANA MELISA NUR FITRI",kelas:"X - F",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"VIRA FEBIANAAZZAHRA",kelas:"X - H",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"HILWA KHALISAH WIDAD AINUL YAQIN",kelas:"X - I",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"IKFA ZULFIANA SOFFA",kelas:"X - I",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"RENANDA EDY GITA SURYANA",kelas:"X - I",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"HAFIDZOTUNISA",kelas:"X - K",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"OSY CALLISTA",kelas:"X - K",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"ANNIDA KHOIRUNNISA WIDYANINGRUM",kelas:"XI - A",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"DWI CAHAYA SHOLIHATI SUHENDAR",kelas:"XI - B",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"JIHAN YURFAUL ULUWI",kelas:"XI - B",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"NAFIAH LAYLATUL MAGHFIRA",kelas:"XI - B",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"ADINDA ZAHRA LUTFIANJANI",kelas:"XI - C",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"KUSUMA DIANA HAPSARI",kelas:"XI - C",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"LUHUR GINANJAR PRAYOGA",kelas:"XI - C",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"BUNGA ALIFIA ARDIANI",kelas:"XI - D",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"LIDYA FITRIYANI",kelas:"XI - D",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"AFFA LAELATUN NADA",kelas:"XI - E",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"CHILYA AINA",kelas:"XI - E",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"FAILASUFA ISMA DIANAAZIZA",kelas:"XI - F",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUHAMMAD TAUFIQUROHMAN",kelas:"XI - F",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"NABILA AZZAHRA",kelas:"XI - F",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"MILATINA SHOLIHAH",kelas:"XI - G",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"BARIKA AZKA MINNATITTAMMI",kelas:"XI - H",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"KHUROH HILDA MAFAZA",kelas:"XI - H",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"MADINA WIRDATUL AULIA",kelas:"XI - H",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"MELLANI MATUVANI",kelas:"XI - H",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"VANYA TRI ANGGRAENI",kelas:"XI - H",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"INAYATUL FAUZIAH AL MUKROMAH",kelas:"XI - I",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"WINDA DWI AGUSTINA",kelas:"XI - I",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"FAZA NILFANA SOFA",kelas:"XI - J",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"HANA AULIA SALSABILA",kelas:"XI - K",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"WAFA NUR KAMILA",kelas:"XI - L",ekstra:"Home Industri (Seni Kriya)",t1:"H",t2:"H",t3:"H"},
+        {nama:"ALFAN HIDAYAT",kelas:"X - C",ekstra:"IRMAS",t1:"H",t2:"H",t3:"-"},
+        {nama:"PUTRI PRASTIWI INAYAH ABBAS",kelas:"X - C",ekstra:"IRMAS",t1:"I",t2:"I",t3:"-"},
+        {nama:"SYAUQI AL HAQ",kelas:"X - D",ekstra:"IRMAS",t1:"H",t2:"H",t3:"-"},
+        {nama:"USMAN HIFDZI ZAIN",kelas:"X - D",ekstra:"IRMAS",t1:"H",t2:"H",t3:"-"},
+        {nama:"IKLIMA FAINUDILLA",kelas:"X - F",ekstra:"IRMAS",t1:"I",t2:"I",t3:"-"},
+        {nama:"HAFIZ MUAZAM FIRJATULLAH",kelas:"X - G",ekstra:"IRMAS",t1:"H",t2:"H",t3:"-"},
+        {nama:"MUHAMMAD AZKA FAROZDAQ",kelas:"X - G",ekstra:"IRMAS",t1:"I",t2:"I",t3:"-"},
+        {nama:"MUHAMMAD KHOIRU UBAIDILLAH",kelas:"X - G",ekstra:"IRMAS",t1:"H",t2:"H",t3:"-"},
+        {nama:"MOH SYARIFUDIN AKMAL",kelas:"X - H",ekstra:"IRMAS",t1:"H",t2:"H",t3:"-"},
+        {nama:"ANINDYA QUANEYSHA FATIN",kelas:"X - K",ekstra:"IRMAS",t1:"I",t2:"-",t3:"-"},
+        {nama:"DJIANDRA ARKHANI BAKTI",kelas:"X - K",ekstra:"IRMAS",t1:"H",t2:"H",t3:"-"},
+        {nama:"HASBULLAH",kelas:"X - K",ekstra:"IRMAS",t1:"H",t2:"H",t3:"-"},
+        {nama:"ASKIA RIZKI RAHMA AULIA",kelas:"XI - G",ekstra:"IRMAS",t1:"I",t2:"I",t3:"-"},
+        {nama:"SAFIRA MAZAYA RAHMAH",kelas:"XI - G",ekstra:"IRMAS",t1:"H",t2:"I",t3:"-"},
+        {nama:"NAJWA JAMILATUL ILMA",kelas:"XI - K",ekstra:"IRMAS",t1:"H",t2:"I",t3:"-"},
+        {nama:"AKHWALIA NAFIDZA UZMA",kelas:"X - A",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"KHASNITA ALFI FUAIDA EL-YAD",kelas:"X - A",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"KHUMAIRATUL MUNA",kelas:"X - A",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"QUININA TRI YULIANA",kelas:"X - A",ekstra:"Jahit",t1:"H",t2:"H",t3:"I"},
+        {nama:"ZAHWA TRI ANGGRAENI",kelas:"X - A",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"SULI SEPTI RAMADANI",kelas:"X - B",ekstra:"Jahit",t1:"H",t2:"H",t3:"H"},
+        {nama:"AZZAHRA KHOIRUNNISA",kelas:"X - C",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"TIARA SYAHIDAH AZKA",kelas:"X - C",ekstra:"Jahit",t1:"A",t2:"A",t3:"H"},
+        {nama:"BAQIYATUS SOLIKHAH",kelas:"X - D",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"FUZA RAHMANIAH",kelas:"X - D",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"SELMA IFADA",kelas:"X - D",ekstra:"Jahit",t1:"H",t2:"H",t3:"H"},
+        {nama:"ZAKYAH RIZQIANY",kelas:"X - D",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"RENITA NOVA LISTIANI",kelas:"X - E",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"TITIS KHAIRINA MANGGALA",kelas:"X - E",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"RANI MULYA LESTARI",kelas:"X - F",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"SITI DELA PUSPITA",kelas:"X - F",ekstra:"Jahit",t1:"A",t2:"A",t3:"H"},
+        {nama:"MUFIDAH AINUL HAYAH",kelas:"X - G",ekstra:"Jahit",t1:"H",t2:"H",t3:"S"},
+        {nama:"AHMAD KHILMI RISQULLAH",kelas:"X - H",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"M ABI TORIK",kelas:"X - H",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"MUHAMMAD ALFA RIZKY",kelas:"X - H",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"NAVA DWI ARIANI",kelas:"X - H",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"SALIMA RIZKI AWALIA",kelas:"X - H",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"SYAKIRA AZ ZAHRA",kelas:"X - H",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"TITIS KHAIRANI MANGGALI",kelas:"X - H",ekstra:"Jahit",t1:"A",t2:"A",t3:"H"},
+        {nama:"KARIMATUSSICHA AZZAHRA",kelas:"X - I",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"SAIFA AMIROTUL HULWUNI HIDYATURROHMAH",kelas:"X - J",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"SYIFA FAOZIA",kelas:"X - J",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"ANDIRA MEKA NUR ZAHWA",kelas:"X - K",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"IRBAH SABILA ZAHRA",kelas:"X - K",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"YANFAONI RAHMATIKA MUSTAFIDZA",kelas:"X - K",ekstra:"Jahit",t1:"H",t2:"H",t3:"H"},
+        {nama:"KHILYATUN NAWA AL ISLAH",kelas:"XI - A",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"NAFEEZA FADHELA RAMADHANI",kelas:"XI - A",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"NUR ALIYATUN NISA",kelas:"XI - B",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"AULIA ZULFA RAMADHANI",kelas:"XI - C",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"IKA DINTA APRILIA",kelas:"XI - D",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"ISMIATUN KHASANAH",kelas:"XI - D",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"ALIKA OKTAVIYANTI",kelas:"XI - E",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"ASFA IZZATA ZIHNI",kelas:"XI - E",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"CHATYA NUR ANNAHARI",kelas:"XI - F",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"HANIFAH ILMIRA",kelas:"XI - F",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"KATARINA KARLIN",kelas:"XI - F",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"SYIFA TAZKIYATUNNISA",kelas:"XI - F",ekstra:"Jahit",t1:"H",t2:"A",t3:"A"},
+        {nama:"DWI AYU RAHMAWATI",kelas:"XI - G",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"SYAFIRA AULIA ADELINA",kelas:"XI - G",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"ANDIN NAILA AZKIA",kelas:"XI - H",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"MAYA AZKARANI",kelas:"XI - H",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"NAFISHA QORI LUTFIYANA",kelas:"XI - H",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"FATIKHATIN FAUZIAH FITROH",kelas:"XI - I",ekstra:"Jahit",t1:"A",t2:"H",t3:"A"},
+        {nama:"NUR FASIKHA",kelas:"XI - J",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"SAFIRA NOOR MUGHITSAH",kelas:"XI - J",ekstra:"Jahit",t1:"A",t2:"A",t3:"A"},
+        {nama:"AURA DIVA FAZALINA",kelas:"XI - K",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"ZULFA FITRIYANA",kelas:"XI - K",ekstra:"Jahit",t1:"A",t2:"S",t3:"H"},
+        {nama:"FINA FARIKHAH",kelas:"XI - L",ekstra:"Jahit",t1:"A",t2:"H",t3:"H"},
+        {nama:"DEWI ZAHRATUN NAFIAH",kelas:"X - A",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"NINDYA SHAFI PRABA",kelas:"X - A",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"TATY NABILAH",kelas:"X - B",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"ALWI ALKHAFSY",kelas:"X - C",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"SYIFA HOLIDATUL UMAH",kelas:"X - F",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"CHABIEBAH NAFIESAH A",kelas:"X - I",ekstra:"Jurnalistik",t1:"I",t2:"I",t3:"-"},
+        {nama:"NINDIANA ALTHAFUNNISA",kelas:"X - J",ekstra:"Jurnalistik",t1:"H",t2:"I",t3:"-"},
+        {nama:"SYIFAUL IKRIMATUSSOLIKHAH",kelas:"XI - A",ekstra:"Jurnalistik",t1:"I",t2:"H",t3:"-"},
+        {nama:"FAIZAN SURONO",kelas:"XI - B",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"FARAH ARISTAWATI",kelas:"XI - B",ekstra:"Jurnalistik",t1:"H",t2:"I",t3:"-"},
+        {nama:"JANEETA ANNAURA TABILA",kelas:"XI - B",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"NABILA AFIFATUZ ZAHRA",kelas:"XI - B",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"SYALWA HAYYIN IZZA DUANDANI",kelas:"XI - B",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"ZIYAN KAMIL MUSHOFFA",kelas:"XI - B",ekstra:"Jurnalistik",t1:"I",t2:"I",t3:"-"},
+        {nama:"ELVY ZAHRA ANISA",kelas:"XI - C",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"FITTAHANI AISYA WA MAULIDA",kelas:"XI - C",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"ILYAS MAJDUN GHINAN",kelas:"XI - C",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"ZAKKYA MAULIN NISSA",kelas:"XI - C",ekstra:"Jurnalistik",t1:"S",t2:"H",t3:"-"},
+        {nama:"YAYAN",kelas:"XI - D",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"ATIKA DWI MAHARANI",kelas:"XI - E",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"NAILY NUR FAIZA",kelas:"XI - E",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"YASIROTUL MAUUNA",kelas:"XI - H",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"CHITYA NUR ROHANI",kelas:"XI - J",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"ADITA MAGHFIRATUN NISA",kelas:"XI - L",ekstra:"Jurnalistik",t1:"H",t2:"H",t3:"-"},
+        {nama:"MUHAMMAD ROYYAN ANABA",kelas:"X - A",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"SYARAH AWALIYAH MUBAROKAH",kelas:"X - A",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"ZILDA SAFITRI",kelas:"X - A",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"Aldhea Sessi Alyska",kelas:"X - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"ALIFIA ZULFAL HANA",kelas:"X - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"BALQIS AL KHUMAIRA",kelas:"X - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"DEWI KUSUMA NINGRUM",kelas:"X - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"Fayyadh Muhammad Adani",kelas:"X - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"IKFINA KAMALIA RIZKI",kelas:"X - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"KARENINA ANGELIA PUTRI GHUFRON",kelas:"X - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"KEZIA AULIA AZ ZAHRA",kelas:"X - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"NADIA FARHANA",kelas:"X - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"NAFLA SYAKIRA",kelas:"X - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"I",t3:"-"},
+        {nama:"NURUL ASSYIFA",kelas:"X - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"VERNITA SABNGI RAMADHANI",kelas:"X - E",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"ALYA AZZAHRA FADISYA",kelas:"X - F",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"NAZILA KHUSNA DEVI",kelas:"X - F",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"DURROTUN NASHIKHAH",kelas:"X - G",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"MUHAMMAD WILDAN ABDILLAH",kelas:"X - G",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"BADIU ZAHROTUN NAFISAH",kelas:"X - H",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"HANIN FATHAN CHOERIYAH",kelas:"X - H",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"I",t3:"-"},
+        {nama:"NURUL AYATUL HUSNA",kelas:"X - H",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"SYIFA ALMI ZAKIYA",kelas:"X - I",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"HANNATUL UMMAH",kelas:"X - J",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"NADIA KUMARA",kelas:"XI - A",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"NAILI ELSA SYARIFA",kelas:"XI - A",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"NAJMA NUR NAHDIANA",kelas:"XI - A",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"SYIFA AJWAH AL-MADANI",kelas:"XI - A",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"FIRDA NUUR AZKIYA",kelas:"XI - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"S",t3:"-"},
+        {nama:"ULIMAZ THYRA",kelas:"XI - B",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"FIKHRIS SYAKINA AMRI",kelas:"XI - C",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"NAURA AULIYAA MALIKA",kelas:"XI - C",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"AKIFA NAILA ROSYDIANA",kelas:"XI - D",ekstra:"Karya Ilmiah Remaja",t1:"-",t2:"H",t3:"-"},
+        {nama:"BUNGA SAFITRI",kelas:"X - A",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"I"},
+        {nama:"ISTAHERA MAULIDA KAMILA ZAIN",kelas:"X - A",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"NAKHBATUN NAJWA TAQIANI",kelas:"X - A",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"NASHIHATUM MADIHAH",kelas:"X - A",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"OKA ALFIANA SALWA",kelas:"X - A",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"YUNI SAYYIDATI LAELATUL ROHMAH",kelas:"X - A",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"SATRIA BUNGAS NUGRAHA",kelas:"X - B",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"AURORA RAHMAWATI",kelas:"X - C",ekstra:"Palang Merah Remaja",t1:"A",t2:"H",t3:"H"},
+        {nama:"HARISA QURROTA AYUNI",kelas:"X - C",ekstra:"Palang Merah Remaja",t1:"S",t2:"H",t3:"H"},
+        {nama:"NAFISATUL AZIZAH",kelas:"X - C",ekstra:"Palang Merah Remaja",t1:"S",t2:"H",t3:"H"},
+        {nama:"SHAQILA TSAQIB QOTRUNNADA",kelas:"X - C",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"TSANIA MAIMANAH AZMI",kelas:"X - C",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"ZIDNA NADIYA KHASNA",kelas:"X - D",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"ANIS KHUZAIMAH FITRI",kelas:"X - E",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"ARO ZAITII BILBINA",kelas:"X - E",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"ASHFANAYA RISHFA ANNURIYA",kelas:"X - E",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"SAMANTA QUANEISHA SALSABILA",kelas:"X - E",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"NADHIFAH ZAHRA OKTALITA DINI",kelas:"X - F",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"NAYLA CAHAYA PUTRI",kelas:"X - F",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"SYIFA GALUH NURFATIKAH",kelas:"X - F",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"I"},
+        {nama:"NAFIS AZZA",kelas:"X - G",ekstra:"Palang Merah Remaja",t1:"I",t2:"H",t3:"H"},
+        {nama:"SHOFIANA NURUL AROFAH",kelas:"X - G",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"UMI NADZROTUNNAZILAH",kelas:"X - G",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"JIHAN FARRAS MUMTAZAH",kelas:"X - J",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"REFINA NUR APRILIA",kelas:"X - J",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"I"},
+        {nama:"SALMA DWI YUANITA",kelas:"X - J",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"KUNI MALIKHATUS SOLIKHAH",kelas:"X - K",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"KARISA PUTRI AULYA",kelas:"XI - A",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"MAYSA TSUROYYA",kelas:"XI - A",ekstra:"Palang Merah Remaja",t1:"A",t2:"H",t3:"A"},
+        {nama:"NISA NUR ROHMAH",kelas:"XI - A",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"FIKA RUHANDINI",kelas:"XI - B",ekstra:"Palang Merah Remaja",t1:"A",t2:"H",t3:"H"},
+        {nama:"RIFAT ANJA ULUF MALUFAH",kelas:"XI - B",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"A"},
+        {nama:"SYAFA RRAHMATIKA",kelas:"XI - B",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUTIARA ANNISA FAUZIAH ALMARUF",kelas:"XI - D",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"FALIHAH AL HASNA",kelas:"XI - E",ekstra:"Palang Merah Remaja",t1:"S",t2:"A",t3:"H"},
+        {nama:"KANIA YULIANA KARIEN",kelas:"XI - E",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"PUTRI NAJIBA SHOUFIS TSANI",kelas:"XI - G",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"SAZKIA LOVITA ARFANI",kelas:"XI - G",ekstra:"Palang Merah Remaja",t1:"A",t2:"A",t3:"A"},
+        {nama:"ATIQOTUN NAFISAH",kelas:"XI - H",ekstra:"Palang Merah Remaja",t1:"A",t2:"H",t3:"A"},
+        {nama:"TARA MEI LIANA",kelas:"XI - H",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"ALMIRA RAMADHANI",kelas:"XI - I",ekstra:"Palang Merah Remaja",t1:"A",t2:"A",t3:"A"},
+        {nama:"NAHLAH AZKA BAHARI",kelas:"XI - I",ekstra:"Palang Merah Remaja",t1:"S",t2:"A",t3:"A"},
+        {nama:"WIKA AMALIA",kelas:"XI - J",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"A"},
+        {nama:"ADIBATUN NISA",kelas:"XI - L",ekstra:"Palang Merah Remaja",t1:"H",t2:"H",t3:"H"},
+        {nama:"AURRA SALSABILA",kelas:"XI - L",ekstra:"Palang Merah Remaja",t1:"A",t2:"H",t3:"A"},
+        {nama:"RIZQY KHUSNA AMALIA",kelas:"XI - L",ekstra:"Palang Merah Remaja",t1:"H",t2:"A",t3:"H"},
+        {nama:"SILVI ZAHROTUNNISAK",kelas:"X - B",ekstra:"Panahan",t1:"H",t2:"I",t3:"H"},
+        {nama:"NAZMIL AUFA NABILAH",kelas:"X - E",ekstra:"Panahan",t1:"A",t2:"I",t3:"H"},
+        {nama:"ZAHRA MAHDIYA EILIYAH",kelas:"XI - A",ekstra:"Panahan",t1:"H",t2:"H",t3:"H"},
+        {nama:"CINTA NABILA SILVIYANA AKHMAD",kelas:"XI - B",ekstra:"Panahan",t1:"A",t2:"I",t3:"H"},
+        {nama:"FATHIN FARSHANI",kelas:"XI - C",ekstra:"Panahan",t1:"H",t2:"A",t3:"H"},
+        {nama:"ZENI SYIFA NABILA",kelas:"XI - C",ekstra:"Panahan",t1:"H",t2:"A",t3:"H"},
+        {nama:"ARKAN TSAQIB",kelas:"XI - D",ekstra:"Panahan",t1:"A",t2:"A",t3:"H"},
+        {nama:"AZAM ALMAS SALSABIL JUNDI",kelas:"XI - D",ekstra:"Panahan",t1:"A",t2:"H",t3:"H"},
+        {nama:"DEWI LATHIFAH",kelas:"XI - D",ekstra:"Panahan",t1:"A",t2:"A",t3:"H"},
+        {nama:"DINDA KHAERUNNISA",kelas:"XI - D",ekstra:"Panahan",t1:"H",t2:"H",t3:"H"},
+        {nama:"MUHAMAD IRHAS ANANDIAWAN",kelas:"XI - D",ekstra:"Panahan",t1:"A",t2:"A",t3:"H"},
+        {nama:"NURIL MALA ARWALU BABA",kelas:"XI - D",ekstra:"Panahan",t1:"A",t2:"I",t3:"H"},
+        {nama:"SATHYA ADI WICAKSANA",kelas:"XI - D",ekstra:"Panahan",t1:"A",t2:"A",t3:"H"},
+        {nama:"NATAVIA FALARANCA",kelas:"XI - E",ekstra:"Panahan",t1:"H",t2:"A",t3:"H"},
+        {nama:"NAURA TRI GIOFANI",kelas:"XI - E",ekstra:"Panahan",t1:"H",t2:"A",t3:"H"},
+        {nama:"NIHAYATUR RIZQI",kelas:"XI - E",ekstra:"Panahan",t1:"H",t2:"A",t3:"H"},
+        {nama:"ADEBA ALFA FAJARINA",kelas:"XI - G",ekstra:"Panahan",t1:"H",t2:"H",t3:"H"},
+        {nama:"ALZENA AZALIA",kelas:"XI - J",ekstra:"Panahan",t1:"H",t2:"A",t3:"H"},
+        {nama:"NUR SYAFARILLA",kelas:"XI - K",ekstra:"Panahan",t1:"A",t2:"A",t3:"H"},
+        {nama:"ULUL AZMI",kelas:"XI - K",ekstra:"Panahan",t1:"A",t2:"H",t3:"H"},
+        {nama:"AISYAH ABHA NISWA",kelas:"X - A",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"ARINAL LUTHFIYAH",kelas:"X - A",ekstra:"Pasukan Inti",t1:"H",t2:"H",t3:"-"},
+        {nama:"RAVENDRA AFRIANSYAH",kelas:"X - A",ekstra:"Pasukan Inti",t1:"H",t2:"H",t3:"-"},
+        {nama:"ALDHEA SESSI ALYSKA",kelas:"X - B",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"FEBI INDRI NURJANATI",kelas:"X - B",ekstra:"Pasukan Inti",t1:"I",t2:"A",t3:"-"},
+        {nama:"AISYA NURKHASYAFA",kelas:"X - C",ekstra:"Pasukan Inti",t1:"H",t2:"H",t3:"-"},
+        {nama:"DIAN TSALAS MAULIDA",kelas:"X - C",ekstra:"Pasukan Inti",t1:"S",t2:"I",t3:"-"},
+        {nama:"FAHRA SIVA ELIYANA",kelas:"X - C",ekstra:"Pasukan Inti",t1:"H",t2:"H",t3:"-"},
+        {nama:"JANEETA RAHMA PUTRI",kelas:"X - C",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"MUHAMMAD DZULQARNAIN",kelas:"X - C",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"SABILA NAFISA AULIA SANI",kelas:"X - C",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"UMI QURROTUN NAFIS",kelas:"X - C",ekstra:"Pasukan Inti",t1:"H",t2:"I",t3:"-"},
+        {nama:"FAZA NUR APRILIA",kelas:"X - D",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"GITA SEPTIA PUTRI",kelas:"X - D",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"SHILVIA SHALIHAH NURAINI",kelas:"X - D",ekstra:"Pasukan Inti",t1:"H",t2:"H",t3:"-"},
+        {nama:"AISYAH MITHALINA ARDINI",kelas:"X - F",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"KAMELIA VISI HAYATI",kelas:"X - F",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"NAJWA TRI ATTANIA",kelas:"X - F",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"ANGGUN HOLIFIAH",kelas:"X - G",ekstra:"Pasukan Inti",t1:"H",t2:"H",t3:"-"},
+        {nama:"AFIAH KAMILIAH",kelas:"X - H",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"AVIYATUN FAIZAH",kelas:"X - H",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"VANESA ALIVIA KIRANI",kelas:"X - H",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"ZULFA HALIMATUL AINI",kelas:"X - H",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"ANINDYA MUTHIA SYIFANI",kelas:"X - I",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"I MADE DAFFA PRIYO SYAFIQUL",kelas:"X - I",ekstra:"Pasukan Inti",t1:"I",t2:"S",t3:"-"},
+        {nama:"ALYA SAFINATU ZAHRO",kelas:"X - K",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"EVLIN JOVANKA",kelas:"X - K",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"AHMAD TSAQIB TAQIYUDIN",kelas:"XI - A",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"AZZAHRA PUTRI CAHYADI",kelas:"XI - A",ekstra:"Pasukan Inti",t1:"H",t2:"H",t3:"-"},
+        {nama:"FAT MASHUDIN",kelas:"XI - A",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"MUHAMMAD SYIFAUDDIN",kelas:"XI - A",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"MAULANA SHOLEHUDDIN",kelas:"XI - B",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"ALDAN MAULANA",kelas:"XI - C",ekstra:"Pasukan Inti",t1:"H",t2:"H",t3:"-"},
+        {nama:"WAFA YUNA NURAINI",kelas:"XI - C",ekstra:"Pasukan Inti",t1:"H",t2:"H",t3:"-"},
+        {nama:"ALIF TANTRA PRATUNGGA",kelas:"XI - D",ekstra:"Pasukan Inti",t1:"H",t2:"I",t3:"-"},
+        {nama:"EMIR MUSTOFA",kelas:"XI - D",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"ZAHROTUSSITA",kelas:"XI - D",ekstra:"Pasukan Inti",t1:"S",t2:"H",t3:"-"},
+        {nama:"MUHAMMAD MULKAN SAMROTUL FUAD",kelas:"XI - E",ekstra:"Pasukan Inti",t1:"H",t2:"H",t3:"-"},
+        {nama:"DIFKY IMAM FITRAH",kelas:"XI - F",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"FARKHANI ZAHROH AGUSTIN",kelas:"XI - G",ekstra:"Pasukan Inti",t1:"I",t2:"I",t3:"-"},
+        {nama:"MAAL CHRISNA KRIANTI",kelas:"XI - G",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"KHOLILATUL KHUMAIZAH",kelas:"XI - H",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"ANITA RAHAYU",kelas:"XI - J",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"DWI SAFITRI",kelas:"XI - K",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"FADHLURROHMAN MURTADHO",kelas:"XI - K",ekstra:"Pasukan Inti",t1:"H",t2:"S",t3:"-"},
+        {nama:"MUHAMMAD BUDI MUSAFAQ",kelas:"XI - K",ekstra:"Pasukan Inti",t1:"H",t2:"H",t3:"-"},
+        {nama:"NADIRA AZ-ZAHRA",kelas:"XI - K",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"NURMAYZATUL AKMAL",kelas:"XI - K",ekstra:"Pasukan Inti",t1:"I",t2:"H",t3:"-"},
+        {nama:"SEPTI ANJANI",kelas:"XI - K",ekstra:"Pasukan Inti",t1:"S",t2:"H",t3:"-"},
+        {nama:"ALFI KHOIROTUN NISA",kelas:"X - A",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"H"},
+        {nama:"AULIA MAULIDA RACHMAN",kelas:"X - C",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"H"},
+        {nama:"MAZAYA UMAROTUL KHULQI NISAK",kelas:"X - C",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"S"},
+        {nama:"MUHAMMAD LUTHFI TIRTA PRADITHA W",kelas:"X - C",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"H"},
+        {nama:"AHMAD SHULTON H",kelas:"X - E",ekstra:"Pencak Silat (Perisai Diri)",t1:"A",t2:"H",t3:"H"},
+        {nama:"NAYSIFA DESTIFANI",kelas:"X - F",ekstra:"Pencak Silat (Perisai Diri)",t1:"A",t2:"H",t3:"S"},
+        {nama:"SITI FATKHURIZQOH",kelas:"X - G",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"H"},
+        {nama:"VANIA RAISSA WIDYA AUFA",kelas:"X - G",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"H"},
+        {nama:"AISYAH NUREL AZKIA",kelas:"X - H",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"H"},
+        {nama:"AZKA FAUZIAH",kelas:"X - H",ekstra:"Pencak Silat (Perisai Diri)",t1:"A",t2:"H",t3:"A"},
+        {nama:"ALFINA DWI AZIZAH",kelas:"X - I",ekstra:"Pencak Silat (Perisai Diri)",t1:"I",t2:"I",t3:"H"},
+        {nama:"ISTINAFUR RAHMA",kelas:"X - I",ekstra:"Pencak Silat (Perisai Diri)",t1:"A",t2:"H",t3:"H"},
+        {nama:"KUN ANIS KHAFIDZOTUL HASNA",kelas:"X - I",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"H"},
+        {nama:"Saifa Amirotul H",kelas:"X - J",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"H"},
+        {nama:"NURUL MA'RIFATUL",kelas:"X - K",ekstra:"Pencak Silat (Perisai Diri)",t1:"I",t2:"I",t3:"H"},
+        {nama:"KHAZIMATUN FARKHANATUL HANA",kelas:"XI - B",ekstra:"Pencak Silat (Perisai Diri)",t1:"A",t2:"A",t3:"A"},
+        {nama:"HILWA MAULIDIYA RAHMATIKA",kelas:"XI - F",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"S"},
+        {nama:"HILMAN BAIHAQI HIDAYAT",kelas:"XI - I",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"I"},
+        {nama:"MEISYA DWI MUJIRIYANTI",kelas:"XI - I",ekstra:"Pencak Silat (Perisai Diri)",t1:"A",t2:"H",t3:"I"},
+        {nama:"ALMIRA TAZKIYA NAHDLIYA AULIA",kelas:"XI - J",ekstra:"Pencak Silat (Perisai Diri)",t1:"A",t2:"A",t3:"A"},
+        {nama:"NURUL FACHRI AL ROJAL",kelas:"XI - J",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"A",t3:"H"},
+        {nama:"M.FAHRIYAN IRSYADI",kelas:"XI - K",ekstra:"Pencak Silat (Perisai Diri)",t1:"A",t2:"H",t3:"H"},
+        {nama:"AGESYA ALIFATUL CHASANAH",kelas:"XI - L",ekstra:"Pencak Silat (Perisai Diri)",t1:"H",t2:"H",t3:"H"},
+        {nama:"FERDIAN PUTRA KHOLIQ",kelas:"XI - L",ekstra:"Pencak Silat (Perisai Diri)",t1:"A",t2:"H",t3:"A"},
+        {nama:"DEVA SABRINA FAIQOH",kelas:"X - A",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"NAILATUS SHOFIA",kelas:"X - A",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"SUCI RIZQIANA RIKFI",kelas:"X - A",ekstra:"PRAMUKA",t1:"H",t2:"A",t3:"-"},
+        {nama:"AFAF SAYIDIL AKWAN",kelas:"X - B",ekstra:"PRAMUKA",t1:"A",t2:"A",t3:"-"},
+        {nama:"ANINDITA A Z",kelas:"X - B",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"SYAFA RIZQIA NUR AFIFAH",kelas:"X - B",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"KHUSNIYAH HIDAYATUL FAIZAH",kelas:"X - C",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"HAFIZA NAFISATUL LATIFAH",kelas:"X - D",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"FIKA ISMATUL HAWA",kelas:"X - F",ekstra:"PRAMUKA",t1:"A",t2:"A",t3:"-"},
+        {nama:"MUTIARA SALSABILA HAFIDZAH",kelas:"X - F",ekstra:"PRAMUKA",t1:"H",t2:"A",t3:"-"},
+        {nama:"RAISSA ELVINA SYABANI",kelas:"X - F",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"RHENO FIRDAUS",kelas:"X - F",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"AZZA AMELIA PUTRI",kelas:"X - G",ekstra:"PRAMUKA",t1:"A",t2:"A",t3:"-"},
+        {nama:"AGATHA LULU ZHAHIRO",kelas:"X - H",ekstra:"PRAMUKA",t1:"A",t2:"A",t3:"-"},
+        {nama:"AZKA FAUZIAH",kelas:"X - H",ekstra:"PRAMUKA",t1:"A",t2:"A",t3:"-"},
+        {nama:"INAYATUN MAULIDA",kelas:"X - J",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"ASTRID YATUS SHOLIHAH",kelas:"XI - A",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"LIN TAZKIYYA FUADAH",kelas:"XI - B",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"CHOIRIKA WAFDA",kelas:"XI - C",ekstra:"PRAMUKA",t1:"A",t2:"H",t3:"-"},
+        {nama:"ARIJ NAJMA MUSTOFA",kelas:"XI - F",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"HANI FITRIANA FAUZIYAH",kelas:"XI - G",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"LUSI WIDI S",kelas:"XI - H",ekstra:"PRAMUKA",t1:"A",t2:"A",t3:"-"},
+        {nama:"KEYLA RIZKA MAUDYASTUTI",kelas:"XI - I",ekstra:"PRAMUKA",t1:"H",t2:"H",t3:"-"},
+        {nama:"FIDAYATUL KHASANAH",kelas:"X - B",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"ASYROF ZAKARIYYA MASUD",kelas:"X - C",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"LABIB NAIL",kelas:"X - D",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"AKMAL HAFIDZ",kelas:"X - E",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"AULIYA KHULATUL JANAH",kelas:"X - E",ekstra:"Rebana",t1:"S",t2:"H",t3:"-"},
+        {nama:"AHMAD AKBARUNNAJAH",kelas:"X - F",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"ALTAF HAIDAR FAIZ",kelas:"X - F",ekstra:"Rebana",t1:"S",t2:"H",t3:"-"},
+        {nama:"MUHAMMAD SYARIFUDIN",kelas:"X - F",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"MUHAMMAD ATHOUL FAHMI",kelas:"X - G",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"NANDA SULTON ILMALANA",kelas:"X - G",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"YUDISTIRA PERMANA",kelas:"X - G",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"IBNU FAWAID",kelas:"X - H",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"ALIEF NURMAN SYAH",kelas:"X - I",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"HAFIZ HAMDAN ALFASIN",kelas:"X - I",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"MUHAMMAD AFLAH IHDA AS SIDQI",kelas:"X - I",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"AFRILIA MAFTUHATUN NISA",kelas:"X - J",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"FARRAS DAFA ALAM",kelas:"X - J",ekstra:"Rebana",t1:"S",t2:"H",t3:"-"},
+        {nama:"JAFETH AHMAD NUR HAKIM",kelas:"X - K",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"LUMINTANG PRAMUDYA ASNA PUTRA",kelas:"X - K",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"ELREISHA DIAH MUHARRA",kelas:"XI - A",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"KAFFA NUR MAZIDAH",kelas:"XI - A",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"RAHAYU FASOHAH",kelas:"XI - A",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"RASHIFATUL CHUSNA",kelas:"XI - A",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"TSALTSA INDANANISA TAUFIKURRAHMADANI",kelas:"XI - A",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"ADINDA RAISYA AN NAHWA",kelas:"XI - B",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"AISYAH KHUROTUL JANNAH",kelas:"XI - B",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"LUHUR GINANJAR PRAYOGA",kelas:"XI - C",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"MUHAMMAD MUTAWAKKIL ALALLAH ZAINAL",kelas:"XI - D",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"REFA QOLBINA ZAHIDA",kelas:"XI - D",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"SHOIB KHAFIDZIN",kelas:"XI - D",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"AUFA ZAIDAN BAKHTIAR",kelas:"XI - E",ekstra:"Rebana",t1:"I",t2:"H",t3:"-"},
+        {nama:"GALIH DWI PRASETIYO",kelas:"XI - F",ekstra:"Rebana",t1:"S",t2:"H",t3:"-"},
+        {nama:"MUHAMMAD RAFLI ZULMI ALFIAN",kelas:"XI - F",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"MUNIF ZUHRI R",kelas:"XI - F",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"TEGUH IMAM MULYA",kelas:"XI - F",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"ADEBA ALFA FAJARINA",kelas:"XI - G",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"FAIQ FAIRUZSANI NORIZ",kelas:"XI - G",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"DINA OLIVIA",kelas:"XI - H",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"HAMZAH SHOHIBUL WAFA",kelas:"XI - H",ekstra:"Rebana",t1:"S",t2:"H",t3:"-"},
+        {nama:"NURUL HASNA",kelas:"XI - H",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"NAZAL FAIQOH WIJIATMOKO",kelas:"XI - I",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"TAZKIYATUNNAFS AZKA AZALIA",kelas:"XI - I",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"AULIA RAHMI",kelas:"XI - L",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"DZAKI AFIF ZAIN",kelas:"XI - L",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"FAYKHA YUMNA ALIFIA",kelas:"XI - L",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"FITA FAUZIYAH",kelas:"XI - L",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"GHAIDA FAHMI IZZATUNNISA",kelas:"XI - L",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"HILYA RUSYDA",kelas:"XI - L",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"MUKHAMMAD HAIKAL",kelas:"XI - L",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"NADIYA MARYAM WENNO",kelas:"XI - L",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"NAJWA AULIYA WAFDA",kelas:"XI - L",ekstra:"Rebana",t1:"H",t2:"H",t3:"-"},
+        {nama:"THALITA KHANZA KHUMAIRA",kelas:"X - A",ekstra:"Sablon",t1:"A",t2:"I",t3:"A"},
+        {nama:"BAQIATUS SOLIKHAH",kelas:"X - D",ekstra:"Sablon",t1:"A",t2:"A",t3:"H"},
+        {nama:"PUTRI LISTIANI",kelas:"X - G",ekstra:"Sablon",t1:"A",t2:"A",t3:"H"},
+        {nama:"ANA ALTHAFUNNISA",kelas:"X - I",ekstra:"Sablon",t1:"A",t2:"A",t3:"A"},
+        {nama:"GHINA AULIA RAHMA",kelas:"X - I",ekstra:"Sablon",t1:"A",t2:"A",t3:"A"},
+        {nama:"INTAN NUR AINI",kelas:"XI - B",ekstra:"Sablon",t1:"A",t2:"H",t3:"I"},
+        {nama:"NAYLA SABRINA",kelas:"XI - B",ekstra:"Sablon",t1:"A",t2:"H",t3:"I"},
+        {nama:"AFRIZAL KHOIRUL R",kelas:"XI - F",ekstra:"Sablon",t1:"A",t2:"A",t3:"A"},
+        {nama:"AIDATUN NAFILAH",kelas:"XI - F",ekstra:"Sablon",t1:"A",t2:"H",t3:"H"},
+        {nama:"AHMAD NUR RIZQI",kelas:"XI - I",ekstra:"Sablon",t1:"H",t2:"H",t3:"I"},
+        {nama:"ALIFIAN FAJRA",kelas:"XI - I",ekstra:"Sablon",t1:"A",t2:"A",t3:"H"},
+        {nama:"M ZAKI ASWAN",kelas:"XI - I",ekstra:"Sablon",t1:"A",t2:"H",t3:"H"},
+        {nama:"NUR FAHRI H",kelas:"XI - I",ekstra:"Sablon",t1:"H",t2:"H",t3:"H"},
+        {nama:"ADELA LINTANG SAROYA",kelas:"XI - J",ekstra:"Sablon",t1:"A",t2:"H",t3:"I"},
+        {nama:"ADZIN EVAN B",kelas:"XI - J",ekstra:"Sablon",t1:"A",t2:"A",t3:"A"},
+        {nama:"ANNAYA PUTRI ARIFIN",kelas:"XI - J",ekstra:"Sablon",t1:"A",t2:"H",t3:"H"},
+        {nama:"HILMI ABDILAH",kelas:"XI - J",ekstra:"Sablon",t1:"A",t2:"H",t3:"I"},
+        {nama:"M ARZU SABIQ",kelas:"XI - J",ekstra:"Sablon",t1:"A",t2:"A",t3:"A"},
+        {nama:"M HILZINIM KAFABIH",kelas:"XI - J",ekstra:"Sablon",t1:"A",t2:"A",t3:"A"},
+        {nama:"ALENA ANINDYA KESYARA",kelas:"X - C",ekstra:"Seni Musik",t1:"I",t2:"H",t3:"-"},
+        {nama:"RAFIQ DZAKI MUNANDAR",kelas:"X - E",ekstra:"Seni Musik",t1:"H",t2:"H",t3:"-"},
+        {nama:"MAULANA ARIF PRATAMA",kelas:"X - H",ekstra:"Seni Musik",t1:"H",t2:"H",t3:"-"},
+        {nama:"MUHAMAD TRI HAMDANI",kelas:"X - H",ekstra:"Seni Musik",t1:"I",t2:"H",t3:"-"},
+        {nama:"YASMIN AUDI DEBYANI",kelas:"X - I",ekstra:"Seni Musik",t1:"I",t2:"H",t3:"-"},
+        {nama:"Hafidzotunisa Aulia Ahmad",kelas:"X - K",ekstra:"Seni Musik",t1:"I",t2:"H",t3:"-"},
+        {nama:"ALUNA FAUZIAH RAHMAH",kelas:"XI - B",ekstra:"Seni Musik",t1:"S",t2:"H",t3:"-"},
+        {nama:"RISANG NOVIAN SAMUDRA",kelas:"XI - K",ekstra:"Seni Musik",t1:"H",t2:"S",t3:"-"},
+        {nama:"WILONA HIKMATUN NAYLA",kelas:"XI - K",ekstra:"Seni Musik",t1:"A",t2:"I",t3:"-"},
+        {nama:"ANIQOTUL ATIYYA",kelas:"XI - L",ekstra:"Seni Musik",t1:"H",t2:"H",t3:"-"},
+        {nama:"ASIQAH NAYLA ZULVA",kelas:"X - A",ekstra:"Tari",t1:"H",t2:"H",t3:"A"},
+        {nama:"KASYAFA SIFARA VILAH",kelas:"X - B",ekstra:"Tari",t1:"A",t2:"H",t3:"H"},
+        {nama:"MAZIYA AKMALIYA ULFA",kelas:"X - B",ekstra:"Tari",t1:"A",t2:"H",t3:"H"},
+        {nama:"NADIA FARHANA",kelas:"X - B",ekstra:"Tari",t1:"A",t2:"A",t3:"A"},
+        {nama:"FITRIANA TRI HAPSARI",kelas:"X - C",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"ANANDA NASYWA AULIA",kelas:"X - D",ekstra:"Tari",t1:"H",t2:"H",t3:"S"},
+        {nama:"HALLIN TSANIA ZAHRA",kelas:"X - D",ekstra:"Tari",t1:"H",t2:"A",t3:"H"},
+        {nama:"DWI APRILIANI SHOLEHAH",kelas:"X - E",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"VANIA ALMAYRA DANASTRI",kelas:"X - E",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"AS SYIFA ARWA MAULIDYA",kelas:"X - F",ekstra:"Tari",t1:"A",t2:"A",t3:"H"},
+        {nama:"ASLA MAULIDA ROMADHONI",kelas:"X - G",ekstra:"Tari",t1:"H",t2:"A",t3:"H"},
+        {nama:"RISKA KUMAIRA",kelas:"X - G",ekstra:"Tari",t1:"H",t2:"H",t3:"I"},
+        {nama:"WILINDA ARUM RAHMANITA",kelas:"X - G",ekstra:"Tari",t1:"A",t2:"A",t3:"A"},
+        {nama:"Agatha Lulu Zhahiro",kelas:"X - H",ekstra:"Tari",t1:"-",t2:"H",t3:"H"},
+        {nama:"GHAITSAA NAFFAZILLA",kelas:"X - H",ekstra:"Tari",t1:"H",t2:"H",t3:"A"},
+        {nama:"INDANA IFTITAKHUL KHUSNA",kelas:"X - H",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"M ABI TORIK",kelas:"X - H",ekstra:"Tari",t1:"I",t2:"A",t3:"A"},
+        {nama:"NADZIFA ZIYYA ALMAHIRA",kelas:"X - H",ekstra:"Tari",t1:"A",t2:"A",t3:"A"},
+        {nama:"RISTA ROIHATUL KHASMA",kelas:"X - H",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"AURELYA JAYIDATUL LABIBAH",kelas:"X - I",ekstra:"Tari",t1:"H",t2:"A",t3:"S"},
+        {nama:"HIDAYATU SIFANI",kelas:"X - I",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"KAISA AULIYA ZAHRA",kelas:"X - I",ekstra:"Tari",t1:"H",t2:"H",t3:"I"},
+        {nama:"SYIFA SALSABILA NADHIFAH",kelas:"X - I",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"ANNISA MILLATUL AZKIYA",kelas:"X - J",ekstra:"Tari",t1:"H",t2:"A",t3:"I"},
+        {nama:"NIKITA ANURU",kelas:"X - J",ekstra:"Tari",t1:"H",t2:"A",t3:"H"},
+        {nama:"NAELA TAMAMIL ASNA",kelas:"X - K",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"NAJWA HANIATUSSYIFA",kelas:"X - K",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"RIFQI SILVIANA PUTRI",kelas:"X - K",ekstra:"Tari",t1:"A",t2:"H",t3:"A"},
+        {nama:"MEILIANA BAHAR",kelas:"XI - A",ekstra:"Tari",t1:"A",t2:"H",t3:"H"},
+        {nama:"QISMIKA AULIA ABDILLAH",kelas:"XI - A",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"TRISA ADINDA PUTRI S",kelas:"XI - A",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"PUTRI MARVA LAELIKA",kelas:"XI - B",ekstra:"Tari",t1:"A",t2:"A",t3:"H"},
+        {nama:"CHILYA ISTI FADATIL AFLAH",kelas:"XI - D",ekstra:"Tari",t1:"H",t2:"I",t3:"H"},
+        {nama:"Farikha almaqfira ramadhani",kelas:"XI - D",ekstra:"Tari",t1:"-",t2:"H",t3:"H"},
+        {nama:"SYAHIDAH ULYA AMANINA",kelas:"XI - D",ekstra:"Tari",t1:"H",t2:"H",t3:"I"},
+        {nama:"AINI AZZAHRA",kelas:"XI - E",ekstra:"Tari",t1:"A",t2:"H",t3:"H"},
+        {nama:"AZHAR NASYWA ALMAITSA",kelas:"XI - G",ekstra:"Tari",t1:"A",t2:"H",t3:"H"},
+        {nama:"NENG ALMAS DIYA ULHAQ",kelas:"XI - G",ekstra:"Tari",t1:"H",t2:"H",t3:"I"},
+        {nama:"ANIK RAHMAWATI",kelas:"XI - H",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"NAILA KHILYATUL KARIMAH",kelas:"XI - H",ekstra:"Tari",t1:"H",t2:"H",t3:"H"},
+        {nama:"RISMA WARDATUL MUTOHAROH",kelas:"XI - H",ekstra:"Tari",t1:"I",t2:"I",t3:"I"},
+        {nama:"NAFIS ZAINANNISA AK-KHUSNA",kelas:"XI - J",ekstra:"Tari",t1:"A",t2:"H",t3:"H"},
+        {nama:"HIKMATUL ILLAHIYAH",kelas:"XI - L",ekstra:"Tari",t1:"H",t2:"H",t3:"I"},
+        {nama:"MUHAMMAD IMADUL HUSNI",kelas:"X - B",ekstra:"Tenis Meja",t1:"H",t2:"H",t3:"H"},
+        {nama:"SYAFIRA NUR HIDAYAH",kelas:"XI - A",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"ALIKA SULA ALBERTINA FELITA",kelas:"XI - D",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"AUFIA SABILA RAHMA",kelas:"XI - D",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"FELISHA MUTIA ZAHRA",kelas:"XI - D",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"ALIF ARDANSYAH",kelas:"XI - E",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"H"},
+        {nama:"BAGUS SETYAWAN",kelas:"XI - E",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"CAHAYA FUADATUL HUSNA",kelas:"XI - E",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"IBRAHIM ZAIDAN NAUVAL",kelas:"XI - E",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"LINTANG AKBAR IBRAHIM",kelas:"XI - E",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"M.SYUFA YUDHA",kelas:"XI - E",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"IFA DHATUL MUAFIDAH",kelas:"XI - F",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"HASNA MASFUFAH",kelas:"XI - G",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"MANDALA NKK VARONISTI",kelas:"XI - G",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"A.IK IZATU TAZKIYATUNNAFS",kelas:"XI - H",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"FIRNANDA VIRA KUSUMA",kelas:"XI - H",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"FAJAR DZAKWAN",kelas:"XI - I",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"ITSNA MARATUS SHOLIHAH",kelas:"XI - L",ekstra:"Tenis Meja",t1:"A",t2:"A",t3:"A"},
+        {nama:"M ALI MAHFUZI",kelas:"XI - L",ekstra:"Tenis Meja",t1:"H",t2:"H",t3:"H"},
+        {nama:"M.DAFFA AZKA JAUNA",kelas:"XI - L",ekstra:"Tenis Meja",t1:"A",t2:"H",t3:"A"},
+        {nama:"ZAZKYA DWI MAHARANI",kelas:"X - A",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"FAYYADH MUHAMMAD ADANI",kelas:"X - B",ekstra:"Theater",t1:"-",t2:"S",t3:"H"},
+        {nama:"NUR ALIFAH",kelas:"X - B",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"OLIVIA RIFKA NUR AZIZAH",kelas:"X - B",ekstra:"Theater",t1:"-",t2:"I",t3:"H"},
+        {nama:"DANAYA FITRIANA",kelas:"X - C",ekstra:"Theater",t1:"-",t2:"I",t3:"H"},
+        {nama:"Ica Alhafidzah",kelas:"X - E",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"AINAYA MUKJIZATUL FATIKHA",kelas:"X - G",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"FIDA SALSABILA RAFIFAH MARUF",kelas:"X - G",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"MUFIDAH KHOIRUN NISSA",kelas:"X - G",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"NAILUL MUNA",kelas:"X - G",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"HUMAIRA RAIHANUN AQILA",kelas:"X - H",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"IKHWAH ZAKIYATUL ADZKIYA",kelas:"X - H",ekstra:"Theater",t1:"-",t2:"A",t3:"H"},
+        {nama:"ATIKA FADLIATUTS TSANIA",kelas:"X - I",ekstra:"Theater",t1:"-",t2:"A",t3:"H"},
+        {nama:"MILLA DYA NUR",kelas:"X - J",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"Nawariza Arina Manasikana",kelas:"X - J",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"NAZAL FADEL AR-RAZY",kelas:"X - J",ekstra:"Theater",t1:"-",t2:"I",t3:"H"},
+        {nama:"Alifia Safa Atuzzahra",kelas:"X - K",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"MUTIA QURROTA AYUN",kelas:"XI - B",ekstra:"Theater",t1:"A",t2:"H",t3:"H"},
+        {nama:"ULYA SIANA",kelas:"XI - B",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"INDY SAHLAH",kelas:"XI - C",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"SALASA KHUSNA MUNFARIDA",kelas:"XI - C",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"SALMA ALFIATUN NISWA",kelas:"XI - C",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"ZULFA TSAUQY ILA IZZATILLAH",kelas:"XI - C",ekstra:"Theater",t1:"-",t2:"I",t3:"H"},
+        {nama:"LISA ALFINA KHUSNAWATI",kelas:"XI - D",ekstra:"Theater",t1:"-",t2:"A",t3:"H"},
+        {nama:"MEZALUNA GHAITSA",kelas:"XI - D",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"NABILA KHOIRUN NISA",kelas:"XI - D",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"UMMA FARWA",kelas:"XI - D",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"AZKIYA NURIL JIHAN",kelas:"XI - E",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"ZAHRA MADINA",kelas:"XI - E",ekstra:"Theater",t1:"-",t2:"S",t3:"H"},
+        {nama:"DYNAR ALFA FAZA",kelas:"XI - F",ekstra:"Theater",t1:"-",t2:"A",t3:"H"},
+        {nama:"ILINIA LAYINA KEYSA",kelas:"XI - F",ekstra:"Theater",t1:"-",t2:"A",t3:"H"},
+        {nama:"SYIFA NAILU SAADAH",kelas:"XI - F",ekstra:"Theater",t1:"-",t2:"A",t3:"H"},
+        {nama:"LANA AMARATUL IRFANIAH",kelas:"XI - G",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"SAFIRA NOOR MUGHITSAH",kelas:"XI - J",ekstra:"Theater",t1:"-",t2:"H",t3:"H"},
+        {nama:"AGHNY ILMA KASYIFA",kelas:"X - E",ekstra:"Thek-Thek",t1:"-",t2:"-",t3:"A"},
+        {nama:"KAMALIA FEBRIANITA",kelas:"X - E",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"I"},
+        {nama:"fika ismatul hawa",kelas:"X - F",ekstra:"Thek-Thek",t1:"-",t2:"-",t3:"A"},
+        {nama:"Najwa Tri Attania",kelas:"X - F",ekstra:"Thek-Thek",t1:"-",t2:"-",t3:"A"},
+        {nama:"SHOFA AUNA NAJUBA",kelas:"X - F",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"H"},
+        {nama:"MARATUN SHOLIHAH",kelas:"X - G",ekstra:"Thek-Thek",t1:"A",t2:"-",t3:"A"},
+        {nama:"MEILA CINDY NATHANIA",kelas:"X - G",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"S"},
+        {nama:"HIDAYATU SIFANA",kelas:"X - I",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"H"},
+        {nama:"MEIKA ANDINITA SALSA",kelas:"X - I",ekstra:"Thek-Thek",t1:"A",t2:"-",t3:"A"},
+        {nama:"BASHIROH AZKA NADIA",kelas:"X - J",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"H"},
+        {nama:"GHINA SYARIFAH",kelas:"X - J",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"H"},
+        {nama:"WAHDANIYAH",kelas:"X - J",ekstra:"Thek-Thek",t1:"A",t2:"-",t3:"A"},
+        {nama:"ELLY RAHMA WATI",kelas:"X - K",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"-"},
+        {nama:"HASNA FIRDA NAZIFA",kelas:"XI - A",ekstra:"Thek-Thek",t1:"A",t2:"-",t3:"A"},
+        {nama:"MUHMMAD NUR ALIM",kelas:"XI - A",ekstra:"Thek-Thek",t1:"S",t2:"-",t3:"H"},
+        {nama:"MARCEHLIA NOVITA SARI",kelas:"XI - C",ekstra:"Thek-Thek",t1:"A",t2:"-",t3:"H"},
+        {nama:"AUFIA SABILA",kelas:"XI - D",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"A"},
+        {nama:"GISKA ANAZAR",kelas:"XI - D",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"H"},
+        {nama:"MADRISTA LIVIA MILANISTI",kelas:"XI - D",ekstra:"Thek-Thek",t1:"A",t2:"-",t3:"H"},
+        {nama:"MAGHFIROTUN KHASANAH",kelas:"XI - D",ekstra:"Thek-Thek",t1:"A",t2:"-",t3:"H"},
+        {nama:"FIQH CAHYONO",kelas:"XI - F",ekstra:"Thek-Thek",t1:"S",t2:"-",t3:"A"},
+        {nama:"TEGUH IMAM MULYA",kelas:"XI - F",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"H"},
+        {nama:"FITRANIA LAILATUL RACHMADHANI",kelas:"XI - G",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"H"},
+        {nama:"GILANG RAMADHAN",kelas:"XI - K",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"A"},
+        {nama:"GUFRON DAI SAPUTRA",kelas:"XI - K",ekstra:"Thek-Thek",t1:"H",t2:"-",t3:"H"},
+        {nama:"HAIDAR IRHAB TUBBA ASSYAHIR",kelas:"XI - K",ekstra:"Thek-Thek",t1:"S",t2:"-",t3:"H"}
+    ];
 
+    // total ± 700 baris (sekitar 740)
+    console.log('Total data dimuat:', dataset.length);
 
-    const tbody = document.getElementById('attendanceBody');
-    const dlNama = document.getElementById('nameData');
-    const selKelas = document.getElementById('classFilter');
-    const selExtra = document.getElementById('extraFilter');
-    const inNama = document.getElementById('nameSearch');
-    const rowCount = document.getElementById('rowCount');
-
-    // Inisialisasi Filter
-    function initFilters() {
-        const classes = [...new Set(rawData.map(s => s.k))].sort();
-        classes.forEach(c => selKelas.innerHTML += `<option value="${c}">${c}</option>`);
-        const extras = [...new Set(rawData.map(s => s.e))].sort();
-        extras.forEach(e => selExtra.innerHTML += `<option value="${e}">${e}</option>`);
-        rawData.slice().sort((a,b) => a.n.localeCompare(b.n)).forEach(s => dlNama.innerHTML += `<option value="${s.n}">`);
+    // Sorting fungsi: kelas asc, nama asc (case-insensitive)
+    function sortData(arr) {
+        return arr.slice().sort((a, b) => {
+            let kA = a.kelas.padStart(10);
+            let kB = b.kelas.padStart(10);
+            if (kA < kB) return -1;
+            if (kA > kB) return 1;
+            return a.nama.localeCompare(b.nama, undefined, { sensitivity: 'base' });
+        });
     }
 
-    function getB(val) {
-        if (val === "H") return "h"; if (val === "S") return "s";
-        if (val === "I") return "i"; if (val === "A") return "a";
-        return "n";
+    const masterData = sortData(dataset);
+    let filteredData = masterData.slice();
+
+    // Elemen DOM
+    const tbody = document.getElementById('tbody');
+    const namaInput = document.getElementById('namaInput');
+    const kelasInput = document.getElementById('kelasInput');
+    const ekstraInput = document.getElementById('ekstraInput');
+    const cariBtn = document.getElementById('cariBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const resetSmall = document.getElementById('resetSmallBtn');
+    const jumlahSpan = document.getElementById('jumlahSpan');
+    const printBtn = document.getElementById('printBtn');
+
+    // Datalist
+    const datalistNama = document.getElementById('datalistNama');
+    const datalistKelas = document.getElementById('datalistKelas');
+    const datalistEkstra = document.getElementById('datalistEkstra');
+
+    // Isi datalist dari data unik
+    function populateDatalists() {
+        const namaSet = new Set();
+        const kelasSet = new Set();
+        const ekstraSet = new Set();
+        masterData.forEach(item => {
+            namaSet.add(item.nama);
+            kelasSet.add(item.kelas);
+            ekstraSet.add(item.ekstra);
+        });
+        datalistNama.innerHTML = [...namaSet].map(v => `<option value="${v}">`).join('');
+        datalistKelas.innerHTML = [...kelasSet].map(v => `<option value="${v}">`).join('');
+        datalistEkstra.innerHTML = [...ekstraSet].map(v => `<option value="${v}">`).join('');
     }
 
-    function render() {
-        const fN = inNama.value.toLowerCase();
-        const fK = selKelas.value;
-        const fE = selExtra.value;
-        const filtered = rawData.filter(s => 
-            s.n.toLowerCase().includes(fN) && 
-            (fK === "" || s.k === fK) && 
-            (fE === "" || s.e === fE)
-        );
-        tbody.innerHTML = "";
-        rowCount.textContent = `Menampilkan ${filtered.length} siswa`;
-        if (filtered.length === 0) { document.getElementById('noData').style.display = "block"; } 
-        else {
-            document.getElementById('noData').style.display = "none";
-            filtered.forEach(s => {
-                tbody.innerHTML += `<tr>
-                    <td class="sticky-col">${s.n}</td>
-                    <td>${s.k}</td><td>${s.e}</td>
-                    <td><span class="badge ${getB(s.d)}">${s.d}</span></td>
-                    <td><span class="badge ${getB(s.d[1])}">${s.d[1]}</span></td>
-                    <td><span class="badge ${getB(s.d[2])}">${s.d[2]}</span></td>
-                </tr>`;
-            });
+    function renderTable(data) {
+        tbody.innerHTML = '';
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="padding: 40px; text-align:center;">😕 tidak cocok</td></tr>';
+            jumlahSpan.innerText = '0';
+            return;
         }
+        let rows = '';
+        data.forEach(item => {
+            rows += `<tr>
+                <td style="font-weight:500;">${item.nama}</td>
+                <td><span class="kelas-badge">${item.kelas}</span></td>
+                <td><span class="ekstra-badge">${item.ekstra}</span></td>
+                <td><span class="absen-cell">${item.t1}</span></td>
+                <td><span class="absen-cell">${item.t2}</span></td>
+                <td><span class="absen-cell">${item.t3}</span></td>
+            </tr>`;
+        });
+        tbody.innerHTML = rows;
+        jumlahSpan.innerText = data.length;
     }
 
-    // Tunggu data diisi sebelum jalan
-    setTimeout(() => {
-        if(rawData.length > 0) { initFilters(); render(); }
-    }, 100);
+    function filterData() {
+        const nVal = namaInput.value.trim().toLowerCase();
+        const kVal = kelasInput.value.trim().toLowerCase();
+        const eVal = ekstraInput.value.trim().toLowerCase();
+        filteredData = masterData.filter(item => {
+            return (!nVal || item.nama.toLowerCase().includes(nVal)) &&
+                   (!kVal || item.kelas.toLowerCase().includes(kVal)) &&
+                   (!eVal || item.ekstra.toLowerCase().includes(eVal));
+        });
+        renderTable(filteredData);
+    }
 
-    inNama.addEventListener('input', render);
-    selKelas.addEventListener('change', render);
-    selExtra.addEventListener('change', render);
+    function resetAll() {
+        namaInput.value = '';
+        kelasInput.value = '';
+        ekstraInput.value = '';
+        filteredData = masterData.slice();
+        renderTable(filteredData);
+    }
+
+    // Event listeners
+    cariBtn.addEventListener('click', filterData);
+    resetBtn.addEventListener('click', resetAll);
+    resetSmall.addEventListener('click', resetAll);
+    printBtn.addEventListener('click', () => window.print());
+    [namaInput, kelasInput, ekstraInput].forEach(inp => inp.addEventListener('keyup', e => {
+        if (e.key === 'Enter') filterData();
+    }));
+
+    // init
+    populateDatalists();
+    renderTable(masterData);
+})();
 </script>
 </body>
 </html>
